@@ -48,3 +48,11 @@ See [the AIrena prototype and integration plan](docs/AIRENA-PROTOTYPE-PLAN.md) f
 ## Next
 
 Measured wall/opening editing and shared 3D geometry → approved furniture catalog → tool-driven AIrena suggestions → saved accounts and production rendering. See the phase plan for details.
+
+## Open furniture library
+
+The collection includes 10 textured Poly Haven CC0 models alongside seven original concept pieces. New models use dimensions derived from source geometry, not verified manufacturer measurements. Source links, authors, licenses, and output sizes are preserved in `assets/models/credits.json`.
+
+Models are self-hosted and loaded on demand. No external account, API key, runtime library API, or Blender installation is needed. `@gltf-transform/cli` from donmccurdy/glTF-Transform is installed as a development dependency. Run `npm run assets:import` to download the curated public source files and optimize them to GLB with 1K WebP textures. Original downloads are cached in ignored `.asset-cache/`. The generated catalog and optimized assets are committed, so normal builds do not fetch external models.
+
+The 10 models total about 5 MB before thumbnails. Runtime models retain their source materials; palette changes affect the room and concept furniture.

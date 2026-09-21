@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { GLTFLoader } from '../vendor/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { footprint, catalog } from './editor-model.js';
 export function createRoomScene(container, callbacks){
@@ -8,10 +9,12 @@ export function createRoomScene(container, callbacks){
  scene.add(new THREE.HemisphereLight(0xfffaf0,0x8c8275,2.4));const sun=new THREE.DirectionalLight(0xfff2d8,3.4);sun.position.set(4,20,10);sun.castShadow=true;sun.shadow.mapSize.set(2048,2048);sun.shadow.camera.left=-25;sun.shadow.camera.right=25;sun.shadow.camera.top=25;sun.shadow.camera.bottom=-25;sun.shadow.normalBias=.035;scene.add(sun);const fill=new THREE.DirectionalLight(0xffffff,.7);fill.position.set(20,8,5);scene.add(fill);
  const structure=new THREE.Group(),furniture=new THREE.Group();scene.add(structure,furniture);let state,selected=null,mode='3d',drag=null,grid,box;
  const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2(),floorPlane=new THREE.Plane(new THREE.Vector3(0,1,0),0);
+ const loader=new GLTFLoader(),templates=new Map(),loading=new Set();
+ function requestModel(url){if(loading.has(url))return;loading.add(url);loader.load(url,gltf=>{templates.set(url,gltf.scene);if(state)rebuild(state)},undefined,error=>{console.warn('Furniture model unavailable; using concept geometry.',url,error.message)});}
  const materials={};function mat(color){if(!materials[color])materials[color]=new THREE.MeshStandardMaterial({color,roughness:.85,metalness:0});return materials[color]}
  function cuboid(w,h,d,color,x,y,z,parent){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),mat(color));m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
  function cylinder(rt,rb,h,color,x,y,z,parent){const m=new THREE.Mesh(new THREE.CylinderGeometry(rt,rb,h,32),mat(color));m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m}
- function clear(group){while(group.children.length){const c=group.children.pop();c.traverse(o=>{if(o.geometry)o.geometry.dispose()});c.parent=null}}
+ function clear(group){while(group.children.length){const c=group.children.pop();c.traverse(o=>{if(o.geometry&&!o.userData.sharedModel)o.geometry.dispose()});c.parent=null}}
  function model(piece){const group=new THREE.Group(),{w,d,h,kind}=piece;const colors=[['#cbbb9f','#886447','#d0baa0','#b7aa8e'],['#d4d1bf','#7c8068','#cec7b5','#aab09a'],['#9f7470','#623e32','#d4bb91','#a78979']][state.palette];
  if(kind==='sofa'){cuboid(w,.55,d,colors[0],0,.5,0,group);cuboid(w,1.6,.36,colors[0],0,1.6,-d/2+.18,group);for(const x of [-w/2+.2,w/2-.2])cuboid(.4,1.6,d,colors[0],x,1.3,0,group);for(let i=0;i<3;i++){cuboid((w-.9)/3-.04,.27,d-.6,colors[0],-w/2+.45+(i+.5)*(w-.9)/3,.92,.17,group);const pillow=cuboid(.95,1.03,.32,i===0?colors[1]:colors[2],-w/2+1+i*2.15,1.65,-.85,group);pillow.rotation.x=-.12;}for(const x of [-w/2+.3,w/2-.3])for(const z of [-d/2+.3,d/2-.3])cuboid(.12,.35,.12,'#614631',x,.17,z,group)}
  if(kind==='chair'){cuboid(w,.35,d,colors[1],0,.85,0,group);cuboid(w,1.7,.32,colors[1],0,1.6,-d/2+.16,group);cuboid(w-.36,.22,d-.35,colors[0],0,1.13,.15,group);for(const x of [-w/2+.12,w/2-.12]){cuboid(.24,.9,d,colors[1],x,1.48,0,group);for(const z of [-d/2+.2,d/2-.2])cuboid(.14,.7,.14,'#604735',x,.4,z,group)}}
@@ -20,6 +23,8 @@ export function createRoomScene(container, callbacks){
  if(kind==='rug'){cuboid(w,.035,d,colors[3],0,.025,0,group);for(let i=1;i<9;i++)cuboid(w-.18,.006,.015,'#d8ccb4',0,.046,-d/2+i*d/9,group)}
  if(kind==='plant'){cylinder(.52,.36,.85,'#b88e71',0,.44,0,group);cylinder(.48,.48,.025,'#574634',0,.88,0,group);cylinder(.045,.065,2.2,'#75644c',0,1.8,0,group);for(let i=0;i<9;i++){const a=i*2.4,r=.35+i%3*.15;const leaf=new THREE.Mesh(new THREE.SphereGeometry(1,12,8),mat(i%2?'#627349':'#798b5e'));leaf.scale.set(.48,.72,.19);leaf.position.set(Math.sin(a)*r,1.6+(i%4)*.55,Math.cos(a)*r);leaf.rotation.set(.3,a,.4);leaf.castShadow=true;group.add(leaf)}}
  if(kind==='lamp'){cylinder(.55,.55,.1,'#665647',0,.08,0,group);cylinder(.035,.035,4.25,'#a98a54',0,2.15,0,group);cylinder(.55,.85,1,'#eee3c8',0,4.45,0,group)}
+ const source=catalog.find(p=>p.kind===piece.kind),url=source?.model;
+ if(url){if(templates.has(url)){clear(group);const object=templates.get(url).clone(true);const bounds=new THREE.Box3().setFromObject(object),size=bounds.getSize(new THREE.Vector3()),center=bounds.getCenter(new THREE.Vector3());const wrapper=new THREE.Group();object.position.sub(new THREE.Vector3(center.x,bounds.min.y,center.z));wrapper.add(object);wrapper.scale.set(w/size.x,h/size.y,d/size.z);object.traverse(o=>{o.userData.sharedModel=true;if(o.isMesh){o.castShadow=true;o.receiveShadow=true;}});group.add(wrapper);}else{if(!group.children.length)cuboid(w,h,d,piece.color,0,h/2,0,group);requestModel(url);}}
  const f=footprint(piece);group.position.set(piece.x+f.w/2,0,piece.z+f.d/2);group.rotation.y=-THREE.MathUtils.degToRad(piece.rotation);group.userData.id=piece.id;group.traverse(o=>o.userData.id=piece.id);return group;
  }
  function rebuild(next){const roomChanged=!state||state.room.width!==next.room.width||state.room.depth!==next.room.depth||state.room.shape!==next.room.shape;state=next;clear(structure);clear(furniture);const r=state.room;

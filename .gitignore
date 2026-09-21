@@ -8,3 +8,5 @@ output/
 .playwright-cli/
 vendor/
 .env
+
+.asset-cache/

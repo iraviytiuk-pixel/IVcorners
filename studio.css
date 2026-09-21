@@ -6,3 +6,7 @@
 @media(prefers-reduced-motion:reduce){.chat-log{scroll-behavior:auto}.typing-dot{animation:none!important}}
 
 .selection-toolbar{flex-wrap:wrap;max-width:calc(100% - 24px);width:max-content;justify-content:center}.rotation-adjust{display:flex;align-items:center;gap:7px;font-size:11px;padding:3px 6px}.rotation-adjust output{min-width:30px;font-variant-numeric:tabular-nums}.rotation-adjust input{width:105px;min-height:32px;accent-color:var(--wine);cursor:ew-resize}.rotation-adjust input:focus-visible{outline:2px solid var(--wine);outline-offset:2px}@media(max-width:650px){.selection-toolbar{gap:5px;padding:8px;bottom:36px}.rotation-adjust{order:3;flex-basis:100%;justify-content:center}.rotation-adjust input{width:150px}}
+
+.furniture-thumbnail img{width:100%;height:100%;object-fit:contain}.collection-footnote a{display:block;margin-top:8px;font-size:10px}.furniture-card small{line-height:1.5}
+
+.catalog-filter{display:block;font-size:8px;letter-spacing:.1em;margin:20px 0 14px}.catalog-filter select{display:block;width:100%;margin-top:8px;padding:10px 4px;background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;color:var(--ink);font:inherit;font-size:12px;letter-spacing:0}

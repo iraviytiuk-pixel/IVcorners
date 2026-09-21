@@ -1,4 +1,6 @@
+import { modelCatalog } from './model-catalog.js';
 export const catalog = [
+ ...modelCatalog,
  {kind:'sofa',name:'The linen sofa',category:'Seating',w:7,d:3,h:2.6,color:'#c6b69e',note:'84 × 36 in'},
  {kind:'chair',name:'The reading chair',category:'Seating',w:2.6,d:2.8,h:2.7,color:'#8b7158',note:'31 × 34 in'},
  {kind:'table',name:'The stone table',category:'Tables',w:3.3,d:2,h:1.25,color:'#bba88b',note:'40 × 24 in'},
