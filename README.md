@@ -56,3 +56,13 @@ The collection includes 10 textured Poly Haven CC0 models alongside seven origin
 Models are self-hosted and loaded on demand. No external account, API key, runtime library API, or Blender installation is needed. `@gltf-transform/cli` from donmccurdy/glTF-Transform is installed as a development dependency. Run `npm run assets:import` to download the curated public source files and optimize them to GLB with 1K WebP textures. Original downloads are cached in ignored `.asset-cache/`. The generated catalog and optimized assets are committed, so normal builds do not fetch external models.
 
 The 10 models total about 5 MB before thumbnails. Runtime models retain their source materials; palette changes affect the room and concept furniture.
+
+## Trace your home, add openings, and hang art
+
+- **Trace a floor plan:** import a JPG/PNG/WebP image, mark two ends of a known distance in feet, then click room corners around the inside perimeter. Build one simple room with 3–24 corners and a 4–60 ft bounding box. Numeric pixel entry is available for keyboard use. Crossed outlines are rejected. The image guide stays in the current tab; calibrated geometry saves with the project.
+- **Doors, windows & art:** select a numbered wall; set width/height in inches, offset and bottom height in feet. Door/window geometry cuts the wall. Upload artwork and set its physical dimensions. Reopen entries to edit or delete. Wall details cannot overlap one another or extend beyond a wall. Ceiling height is currently 8 ft for new rooms.
+- **Eye level:** drag to look; use on-screen arrows or keyboard arrows/WASD to move. Camera movement remains within the room outline; it is a visual preview and does not model body clearance, obstacles, or door swings.
+- Uploaded artwork is resized to JPEG locally (up to 768 px) and included with explicit device-local saves. A room image budget limits storage; browser quota failures are reported. The SVG export shows the traced outline and wall-detail locations, not artwork elevations or the source image.
+- Older saved layouts remain supported. Changes participate in undo/redo. Tracing a new room removes existing wall details and furniture that no longer fits; undo restores the previous state.
+
+Implementation: `src/space-model.js` owns polygon/calibration/attachment validation; `src/space-tools.js` owns the dialogs and local image processing; `src/room-architecture.js` owns segmented walls, openings, and artwork in the Three.js scene.

@@ -1,7 +1,7 @@
 import { cp, mkdir, rm } from 'node:fs/promises';
 await rm('dist', { recursive: true, force: true });
 await mkdir('dist');
-for (const file of ['index.html', 'styles.css', 'app.js', 'studio.html', 'studio.css', 'studio.js', 'knowledge/airena-knowledge.mjs', 'src/editor-model.js', 'src/model-catalog.js', 'src/design-guide.js', 'src/room-scene.js', 'favicon.svg', '_headers', 'assets', 'src/geometry.js']) {
+for (const file of ['index.html', 'styles.css', 'app.js', 'studio.html', 'studio.css', 'studio.js', 'knowledge/airena-knowledge.mjs', 'src/editor-model.js', 'src/model-catalog.js', 'src/design-guide.js', 'src/room-scene.js', 'src/space-model.js', 'src/space-tools.js', 'src/room-architecture.js', 'favicon.svg', '_headers', 'assets', 'src/geometry.js']) {
   await cp(file, `dist/${file}`, { recursive: true });
 }
 console.log('Built static website in dist/');

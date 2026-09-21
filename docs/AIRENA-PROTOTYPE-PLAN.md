@@ -54,7 +54,7 @@ Use test conversations to measure: useful questions, remembered constraints, no 
 
 ## Still needed for a production product
 
-Live provider credentials and end-to-end tests; authentic avatar session plumbing; accounts and durable private storage; real floor-plan/door/window editing; photo interpretation; verified GLB/product catalog; circulation and doorway checks; saving uploaded references/art; multi-room projects; complete observability and abuse controls. This prototype is a working interaction foundation, not a finished autonomous designer.
+Live provider credentials and end-to-end tests; authentic avatar session plumbing; accounts and durable private storage; multi-room and more advanced floor-plan editing; photo interpretation; verified GLB/product catalog; circulation and doorway checks; saving chat inspiration references; multi-room projects; complete observability and abuse controls. This prototype is a working interaction foundation, not a finished autonomous designer.
 
 ## Primary references checked
 
@@ -64,3 +64,8 @@ Live provider credentials and end-to-end tests; authentic avatar session plumbin
 - https://developers.openai.com/api/docs/guides/structured-outputs
 - https://docs.netlify.com/build/functions/api/
 - https://docs.netlify.com/manage/security/secure-access-to-sites/rate-limiting/
+
+
+## Personal-room update
+
+Manual calibrated floor-plan tracing, custom room polygons, editable wall openings, locally saved artwork, and eye-level navigation are now implemented. See README for supported image formats, limits, and controls. Tracing uses a user-supplied known measurement; no automatic measurement or circulation certification is implied.
