@@ -1,50 +1,43 @@
 # IV Corners
 
-AI interior design by [IV Atelier](https://ivatelier.com). A person describes a room they
-already live in; IV Corners returns a scaled floor plan, a material palette, and a furniture
-list where every piece links to buy it. No designer in the loop at any point.
+A mobile-friendly, web-first interior design concept inspired by IV Atelier. Phase 1 turns the original HTML mockup into a polished website with an interactive monitor and a working browser studio.
 
-The taste is Irena Viitiuk's — a decade of hospitality and residential work behind Park
-Central Hotel, Fisher Island and Bentley South Beach — encoded into something that runs
-without her.
+## Run
 
-## What's here
+Node 20+ and Python 3. No npm dependencies required.
 
-| Path | What it is |
-| --- | --- |
-| `index.html` | The live site. Screens 1–3, self-contained apart from `assets/`. Open it directly in a browser. |
-| `src/planner.py` | Floor plan renderer. Room polygon + furniture list in, SVG out. |
-| `examples/` | Two plans produced by `planner.py`, unedited. |
-| `assets/` | Photography, material swatches, reference images. |
-| `docs/ARCHITECTURE.md` | The two constraints that decide whether this product works. Read this first. |
-| `docs/FLOW.md` | The five screens, end to end. |
-
-## Running it
-
-`index.html` needs no build step and no server — open it in a browser. Screen 1 is the
-landing page, "Meet AIrena" goes to the intake, and entering dimensions draws a plan live.
-
-The Python renderer is standalone:
-
-```bash
-python3 - <<'PY'
-import sys; sys.path.insert(0, 'src')
-from planner import Room, Opening, Item, render
-room = Room('LIVING', [(0,0),(192,0),(192,156),(0,156)],
-            [Opening(0, 42, 84, 'window'), Opening(2, 22, 34, 'door')],
-            [Item('sofa', 96, 34, 88, 37, 0, 'SOFA')])
-open('plan.svg','w').write(render(room))
-PY
+```sh
+npm run dev
+# http://127.0.0.1:4173
+npm test
+npm run build
 ```
 
-## Current state
+Deploy `dist/` to Netlify. `netlify.toml` supplies the build settings; `_headers` also supports direct ZIP deployments.
 
-Screens 1–3 are built. Screen 3 places furniture by rule in JavaScript — a simplified version
-of the solver described in `docs/ARCHITECTURE.md`. Screens 4 and 5 are specified but not built,
-and both depend on the product catalog, which depends on affiliate approvals.
+## Working in this version
 
-## The one thing to get right
+- Responsive editorial landing page with scroll reveals and an optional animated walkthrough.
+- Interactive monitor: inspiration, dimensioned floor plan, material palettes, and art elevation.
+- Studio: rectangle/L-shaped room, 10–30 ft dimensions, two conceptual arrangements, three palettes.
+- Local JPG/PNG/WebP art upload, aspect-ratio-aware display and artwork sizing.
+- Device-local saving and SVG floor-plan download.
+- Keyboard-accessible tabs, native modal focus management, reduced-motion support.
 
-No language model draws geometry here, and none should. Walls, clearances and dimensions are
-computed. The AI's job is reading what the customer says, choosing which pieces, and writing
-the rationale. Everything spatial is code. `docs/ARCHITECTURE.md` explains why.
+## Scope
+
+This is a visual MVP. Photography is inspiration rather than a generated view of the user's room. Furniture and openings are illustrative; no fit guarantee or clearance solver is provided. AIrena notes are curated copy. No API keys, live AI, accounts, backend uploads, purchasing links, or native app are included. Uploaded art remains in memory and is not saved. Room preferences are saved only when the user chooses to save them.
+
+## Files
+
+- `index.html`, `styles.css`, `app.js`: website and studio.
+- `src/geometry.js`: pure, tested room geometry and SVG rendering.
+- `src/planner.py`: preserved original standalone Python renderer.
+- `assets/`: original repository photography/materials, retained locally.
+- `docs/WEB-MVP-PLAN.md`: phased implementation plan.
+- `docs/reference/original-mockup.html`: preserved original (its asset paths assume the original root).
+- `docs/ARCHITECTURE.md`, `docs/FLOW.md`: original product thinking; the current phase is documented above and in the MVP plan.
+
+## Next
+
+Measured wall/opening editing and shared 3D geometry → approved furniture catalog → tool-driven AIrena suggestions → saved accounts and production rendering. See the phase plan for details.
