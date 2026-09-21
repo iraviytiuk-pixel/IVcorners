@@ -8,7 +8,7 @@ try{const saved=JSON.parse(localStorage.getItem('iv-corners-studio-v2'));if(vali
 function toast(message){clearTimeout(toastTimer);$('#room-toast').hidden=false;$('#room-toast').textContent=message;toastTimer=setTimeout(()=>$('#room-toast').hidden=true,4500)}
 function commit(next){history.push(structuredClone(state));if(history.length>40)history.shift();future=[];state=next;render();$('#save-status').textContent='Unsaved changes · saved only on this device';}
 function select(id){selected=id;scene?.select(id);renderSelection()}
-function renderSelection(){const item=state.items.find(x=>x.id===selected);$('#selection-toolbar').hidden=!item;if(item){$('#selected-name').textContent=item.name;$('#selected-size').textContent=`${Math.round(item.w*12)} × ${Math.round(item.d*12)} in`}$$('#inventory-list button').forEach(b=>b.classList.toggle('selected',b.dataset.id===selected));}
+function renderSelection(){const item=state.items.find(x=>x.id===selected);$('#selection-toolbar').hidden=!item;if(item){$('#rotation-angle').value=item.rotation;$('#rotation-value').textContent=`${Math.round(item.rotation)}°`;$('#selected-name').textContent=item.name;$('#selected-size').textContent=`${Math.round(item.w*12)} × ${Math.round(item.d*12)} in`}$$('#inventory-list button').forEach(b=>b.classList.toggle('selected',b.dataset.id===selected));}
 function handleMove(id,x,z){const result=moveItem(state,id,x,z);if(result.ok){const old=state.items.find(p=>p.id===id),next=result.state.items.find(p=>p.id===id);if(old.x!==next.x||old.z!==next.z)commit(result.state);else scene?.update(state)}else{scene?.update(state);toast(result.reason)}select(id)}
 function add(kind,point){const result=addItem(state,kind);if(!result.ok){toast(result.reason);return false}let next=result.state;if(point){const piece=next.items.find(x=>x.id===result.id),f=footprint(piece);const moved=moveItem(next,result.id,point.x-f.w/2,point.z-f.d/2);if(moved.ok)next=moved.state;else toast('Placed in an open spot. The drop position was blocked.')}commit(next);select(result.id);return true}
 function render(){
@@ -25,7 +25,7 @@ function closeDrawers(){$$('.drawer-open').forEach(p=>p.classList.remove('drawer
 function openDrawer(id){closeDrawers();if(id==='room')return;$('#'+id).classList.add('drawer-open');$('#drawer-backdrop').hidden=false;$$(`[data-drawer="${id}"]`).forEach(b=>b.classList.add('active'));syncDrawers();if(id==='airena-panel')startConversation();}
 $$('[data-drawer]').forEach(b=>b.addEventListener('click',()=>openDrawer(b.dataset.drawer)));$$('[data-close-drawer]').forEach(b=>b.addEventListener('click',closeDrawers));$('#drawer-backdrop').addEventListener('click',closeDrawers);
 $('#undo').addEventListener('click',()=>{if(!history.length)return;future.push(structuredClone(state));state=history.pop();render();$('#save-status').textContent='Unsaved changes'});$('#redo').addEventListener('click',()=>{if(!future.length)return;history.push(structuredClone(state));state=future.pop();render();$('#save-status').textContent='Unsaved changes'});
-$('#rotate-item').addEventListener('click',()=>{const r=rotateItem(state,selected);r.ok?commit(r.state):toast(r.reason)});$('#remove-item').addEventListener('click',()=>{if(!selected)return;const id=selected;selected=null;commit({...state,items:state.items.filter(p=>p.id!==id)})});
+$('#rotate-item').addEventListener('click',()=>{const r=rotateItem(state,selected,45);r.ok?commit(r.state):toast(r.reason)});$('#remove-item').addEventListener('click',()=>{if(!selected)return;const id=selected;selected=null;commit({...state,items:state.items.filter(p=>p.id!==id)})});
 $('#room-canvas').addEventListener('keydown',e=>{if(!selected)return;const piece=state.items.find(x=>x.id===selected);if(!piece)return;if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();const n=e.shiftKey?1:.25;handleMove(selected,piece.x+(e.key==='ArrowRight'?n:e.key==='ArrowLeft'?-n:0),piece.z+(e.key==='ArrowDown'?n:e.key==='ArrowUp'?-n:0))}if(e.key.toLowerCase()==='r')$('#rotate-item').click();if(['Delete','Backspace'].includes(e.key)){e.preventDefault();$('#remove-item').click()}});
 $$('[data-view]').forEach(b=>b.addEventListener('click',()=>{view=b.dataset.view;$$('[data-view]').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-selected',active);x.tabIndex=active?0:-1});scene?.setMode(view);$('#canvas-help').textContent=view==='3d'?'Drag furniture to move · Drag empty space to orbit · Scroll to zoom':'Drag furniture to move · Select a piece to rotate or remove'}));
 $$('[data-filter]').forEach(b=>b.addEventListener('click',()=>{$$('[data-filter]').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-selected',active);x.tabIndex=active?0:-1});renderCatalog(b.dataset.filter)}));
@@ -62,3 +62,19 @@ const welcome=document.createElement('article');welcome.className='chat-message'
 if(new URLSearchParams(location.search).has("chat")){if(innerWidth<=650)openDrawer("airena-panel");else startConversation();}
 
 syncDrawers();addEventListener('resize',syncDrawers);
+
+// Preview a drag continuously, then record the entire gesture as one undo step.
+let rotationStart=null,rotationPreview=null;
+$('#rotation-angle').addEventListener('input',e=>{
+ if(!selected)return;
+ rotationStart??=structuredClone(state);
+ const item=rotationStart.items.find(p=>p.id===selected);
+ if(!item)return;
+ const angle=Number(e.target.value),result=rotateItem(rotationStart,selected,angle-item.rotation);
+ if(result.ok){rotationPreview=result.state;scene?.update(rotationPreview);if(!scene)$('#room-canvas').innerHTML=`<div class="room-fallback">${serializePlan(rotationPreview)}</div>`;$('#rotation-value').textContent=`${angle}°`;}
+ else{toast(result.reason);const accepted=(rotationPreview||rotationStart).items.find(p=>p.id===selected).rotation;$('#rotation-value').textContent=`${Math.round(accepted)}°`;}
+});
+function finishRotation(){if(!rotationStart)return;const next=rotationPreview;rotationStart=null;rotationPreview=null;if(next&&JSON.stringify(next)!==JSON.stringify(state))commit(next);else render();}
+$('#rotation-angle').addEventListener('change',finishRotation);
+$('#rotation-angle').addEventListener('blur',finishRotation);
+$('#rotation-angle').addEventListener('pointercancel',()=>{rotationStart=null;rotationPreview=null;render();});
