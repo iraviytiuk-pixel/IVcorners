@@ -1,0 +1,5 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {getDemoReply,interview} from '../src/design-guide.js';import {initialState} from '../src/editor-model.js';
+test('floor-lamp and reading-chair requests become actionable proposals',()=>{for(const [text,kind] of [['Add a floor lamp','lamp'],['Add a reading chair','chair']]){const r=getDemoReply(text,{},initialState());assert.equal(r.actions[0]?.type,'add_item');assert.equal(r.actions[0]?.value,kind);assert.deepEqual(r.brief,{})}});
+test('eight answers produce a complete designer brief, one question at a time',()=>{let brief={};for(let i=0;i<8;i++){const reply=getDemoReply(interview[i].choices[0],brief,initialState());brief=reply.brief;assert.equal(Object.keys(brief).length,i+1)}assert.equal(brief.life,interview[0].choices[0])});
+test('a disliked color is not offered as a palette',()=>{const reply=getDemoReply('I hate burgundy',{},initialState());assert.equal(reply.actions.filter(a=>a.type==='set_palette').length,0)});

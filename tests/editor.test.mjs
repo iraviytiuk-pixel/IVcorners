@@ -1,0 +1,7 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import * as editor from '../src/editor-model.js';
+test('dragging cannot place a piece beyond room walls',()=>{assert.equal(typeof editor.moveItem,'function');const state=editor.initialState();const id=state.items.find(x=>x.kind==='sofa').id;const result=editor.moveItem(state,id,-20,-20);assert.equal(result.ok,false);assert.deepEqual(result.state,state)});
+test('a move into another solid piece is rejected but rugs can overlap',()=>{const s=editor.initialState();const sofa=s.items.find(x=>x.kind==='sofa'),chair=s.items.find(x=>x.kind==='chair');assert.equal(editor.moveItem(s,chair.id,sofa.x,sofa.z).ok,false);const rug=s.items.find(x=>x.kind==='rug');assert.equal(editor.moveItem(s,rug.id,sofa.x,sofa.z-3).ok,true)});
+test('rotation swaps a rectangular piece footprint and respects walls',()=>{const s=editor.initialState();const item=s.items.find(x=>x.kind==='table');const r=editor.rotateItem(s,item.id);assert.ok(r.ok);assert.equal(r.state.items.find(x=>x.id===item.id).rotation,90)});
+test('catalog add finds open placement and leaves source state intact',()=>{const s=editor.initialState();const r=editor.addItem(s,'plant');assert.ok(r.ok);assert.equal(r.state.items.length,s.items.length+1);assert.equal(s.items.length,6)});
+test('loaded state rejects invalid or excessive geometry',()=>{assert.equal(editor.validState({items:[]}),false);const s=editor.initialState();assert.equal(editor.validState(s),true);s.items[0].x=Infinity;assert.equal(editor.validState(s),false)});

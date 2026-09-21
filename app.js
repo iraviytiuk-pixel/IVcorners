@@ -45,7 +45,7 @@ function updateArt(){
  $('#art-size-value').textContent=`${artWidth} in`;$('#studio-art-dimension').textContent=`${artWidth} × ${Math.round(artWidth/artAspect)} in`;
 }
 function feedback(message){$('#studio-feedback').textContent=message}
-function openStudio(){stopStory();$('#studio-dialog').showModal();$('#studio-dialog').scrollTop=0;$('#room-name').focus({preventScroll:true})}
+function openStudio(){stopStory();window.location.assign('/studio.html')}
 function closeStudio(){$('#studio-dialog').close()}
 function switchStudioView(view){
  $$('[data-studio-view]').forEach(b=>{const active=b.dataset.studioView===view;b.classList.toggle('active',active);b.setAttribute('aria-selected',active);b.tabIndex=active?0:-1});

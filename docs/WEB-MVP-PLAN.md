@@ -30,3 +30,8 @@ No horizontal overflow at phone widths. Every CTA reaches a working flow. Dimens
 - Browser checked at 320, 390, 768, 1024, and 1440 px without page overflow.
 - Verified room name/dimension/shape updates, local save and reload, uploaded image aspect ratio, SVG download, keyboard tabs, dialog Tab cycling, Escape dismissal, and reduced motion.
 - This is a direct Netlify deployment. Automatic GitHub deployments have not been configured.
+
+
+## Interactive studio follow-up
+
+The standalone 3D studio and guided AIrena interview are now implemented. See [AIRENA-PROTOTYPE-PLAN.md](AIRENA-PROTOTYPE-PLAN.md) for current capabilities, connection requirements, and remaining production scope.

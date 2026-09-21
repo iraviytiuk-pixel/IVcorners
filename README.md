@@ -4,9 +4,10 @@ A mobile-friendly, web-first interior design concept inspired by IV Atelier. Pha
 
 ## Run
 
-Node 20+ and Python 3. No npm dependencies required.
+Node 20+ and Python 3. Three.js is bundled locally.
 
 ```sh
+npm ci
 npm run dev
 # http://127.0.0.1:4173
 npm test
@@ -17,20 +18,26 @@ Deploy `dist/` to Netlify. `netlify.toml` supplies the build settings; `_headers
 
 ## Working in this version
 
-- Responsive editorial landing page with scroll reveals and an optional animated walkthrough.
-- Interactive monitor: inspiration, dimensioned floor plan, material palettes, and art elevation.
-- Studio: rectangle/L-shaped room, 10–30 ft dimensions, two conceptual arrangements, three palettes.
-- Local JPG/PNG/WebP art upload, aspect-ratio-aware display and artwork sizing.
-- Device-local saving and SVG floor-plan download.
-- Keyboard-accessible tabs, native modal focus management, reduced-motion support.
+- Responsive editorial landing page with an interactive monitor and studio entry points.
+- Dedicated `/studio.html` workspace: Three.js 3D room and floor-plan view, furniture catalog drag/drop, tap-to-add, moving, rotation, removal, undo/redo.
+- Rectangle/L-shaped rooms, editable dimensions, basic boundary and footprint overlap checks, three palettes.
+- AIrena sidebar/mobile drawer with typing, an eight-topic guided interview, local reference images, and explicit apply buttons for design proposals.
+- Device-local room/brief saving and SVG export of the current furniture arrangement.
+- Prepared server-side OpenAI integration in `netlify/functions/airena.mjs`; disabled until credentials and enable flag are configured.
 
 ## Scope
 
-This is a visual MVP. Photography is inspiration rather than a generated view of the user's room. Furniture and openings are illustrative; no fit guarantee or clearance solver is provided. AIrena notes are curated copy. No API keys, live AI, accounts, backend uploads, purchasing links, or native app are included. Uploaded art remains in memory and is not saved. Room preferences are saved only when the user chooses to save them.
+This is an interactive prototype. The sample furniture has concept dimensions; there is no verified retailer catalog, door-swing or circulation solver, or fit guarantee. AIrena currently runs an explicitly labeled guided demo. Her portrait is not a live avatar. Live provider behavior remains untested without credentials. Uploaded references stay in memory and are not analyzed or saved. Room and brief are saved on this device only when requested.
+
+See [the AIrena prototype and integration plan](docs/AIRENA-PROTOTYPE-PLAN.md) for live text, avatar sessions, reviewed knowledge, storage, and remaining production work.
 
 ## Files
 
-- `index.html`, `styles.css`, `app.js`: website and studio.
+- `index.html`, `styles.css`, `app.js`: landing page and monitor demo.
+- `studio.html`, `studio.css`, `studio.js`: interactive workspace.
+- `src/editor-model.js`, `src/room-scene.js`: validated room state and Three.js scene.
+- `knowledge/airena-knowledge.mjs`, `src/design-guide.js`: starter design knowledge and guided interview.
+- `netlify/functions/airena.mjs`: optional live conversation endpoint.
 - `src/geometry.js`: pure, tested room geometry and SVG rendering.
 - `src/planner.py`: preserved original standalone Python renderer.
 - `assets/`: original repository photography/materials, retained locally.
