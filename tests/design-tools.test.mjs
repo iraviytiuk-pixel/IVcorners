@@ -1,0 +1,10 @@
+import test from 'node:test';import assert from 'node:assert/strict';
+import {initialState,placementIssue} from '../src/editor-model.js';
+import {assistedPlacement,measureGaps,duplicatePiece} from '../src/design-tools-model.js';
+test('near-wall snap keeps a whole piece in bounds',()=>{const s=initialState();s.items=[s.items[2]];const r=assistedPlacement(s,s.items[0].id,.12,4,true);assert.equal(r.ok,true);assert.equal(r.item.x,0);assert.equal(placementIssue(r.state,r.item),null)});
+test('assistance never accepts a collision',()=>{const s=initialState(),sofa=s.items[1],chair=s.items[2];assert.equal(assistedPlacement(s,chair.id,sofa.x,sofa.z,true).ok,false)});
+test('nearest gap measures footprint edges, not centers',()=>{const s=initialState();s.items=[{...s.items[2],x:2,z:3}];const gaps=measureGaps(s,s.items[0].id);assert.ok(Math.abs(gaps.find(g=>g.kind==='wall').distance-2)<1e-6)});
+test('duplicate preserves rotation and dimensions while finding an open spot',()=>{const s=initialState();const p=s.items[2];const r=duplicatePiece(s,p.id);assert.equal(r.ok,true);const copy=r.state.items.at(-1);assert.notEqual(copy.id,p.id);assert.equal(copy.rotation,p.rotation);assert.equal(copy.w,p.w);assert.equal(placementIssue(r.state,copy),null)});
+import {validState} from '../src/editor-model.js';
+test('room finishes round-trip and reject invalid material values',()=>{const s=initialState();s.finishes={wall:'sage',floor:'walnut',light:'evening'};assert.equal(validState(JSON.parse(JSON.stringify(s))),true);s.finishes.wall='bad';assert.equal(validState(s),false)});
+test('guides can be disabled while collision validation remains active',()=>{const s=initialState();s.items=[s.items[2]];const r=assistedPlacement(s,s.items[0].id,.26,4,false);assert.equal(r.ok,true);assert.equal(r.item.x,.25);assert.deepEqual(r.lines,[])});

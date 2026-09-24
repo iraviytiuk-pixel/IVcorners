@@ -66,3 +66,11 @@ The 10 models total about 5 MB before thumbnails. Runtime models retain their so
 - Older saved layouts remain supported. Changes participate in undo/redo. Tracing a new room removes existing wall details and furniture that no longer fits; undo restores the previous state.
 
 Implementation: `src/space-model.js` owns polygon/calibration/attachment validation; `src/space-tools.js` owns the dialogs and local image processing; `src/room-architecture.js` owns segmented walls, openings, and artwork in the Three.js scene.
+
+## Design refinements
+
+- Search the furniture collection, duplicate selected pieces, and toggle snapping/alignment guides. Dragging uses validated nearby wall/edge/center candidates; keyboard movement retains precise quarter-foot increments. Gap annotations measure catalog footprint edges, not certified circulation clearance.
+- **Finishes** offers five wall paint colors plus the existing palette, three textured floor options plus the original floor, and daylight/evening lighting studies. Finish choices participate in undo and device-local saves.
+- **My layouts** stores up to six named variations in IndexedDB with a clean preview, room state, and camera view. Restore is undoable. These records survive reloads but are local to this browser and disappear when site data is cleared.
+- **Room image** exports the current camera as a PNG after models load, without selection boxes or editing guides. The separate SVG export remains a schematic floor plan.
+- GitHub Actions runs `npm ci`, tests, and the production build for pushes and pull requests. Netlify deployment currently uses the project CLI configuration; syncing GitHub alone does not imply an automatic Netlify deployment.

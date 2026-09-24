@@ -1,10 +1,11 @@
+import {wallFinishes,finishesFor} from './finishes.js';
 import * as THREE from 'three';
 import {walls} from './space-model.js';
 // Textures are cached for this session; images never leave the user's browser.
 const artMaterials=new Map();
 function artworkMaterial(data,render){if(!artMaterials.has(data)){const texture=new THREE.TextureLoader().load(data,render);texture.colorSpace=THREE.SRGBColorSpace;artMaterials.set(data,new THREE.MeshStandardMaterial({map:texture,roughness:.9,side:THREE.DoubleSide}));}return artMaterials.get(data);}
 export function buildWalls(state,structure,cuboid,mat,render){
- const height=state.room.height||8,wallColor=['#e2d9c9','#d7d9cc','#d5c4b6'][state.palette];
+ const height=state.room.height||8,wallColor=wallFinishes.find(p=>p.id===finishesFor(state).wall)?.color||['#e2d9c9','#d7d9cc','#d5c4b6'][state.palette];
  for(const wall of walls(state.room)){
   const group=new THREE.Group();group.position.set(wall.a.x,0,wall.a.z);group.rotation.y=-Math.atan2(wall.dz,wall.dx);group.userData.wall=wall;structure.add(group);
   const openings=(state.openings||[]).filter(p=>p.wall===wall.index),cuts=[0,wall.length,...openings.flatMap(p=>[p.offset,p.offset+p.width])].sort((a,b)=>a-b);
