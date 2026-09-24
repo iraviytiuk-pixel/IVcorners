@@ -1,0 +1,4 @@
+export const wallFinishes=[{id:'palette',name:'Follow room palette',color:null},{id:'chalk',name:'Warm chalk',color:'#eee8dc'},{id:'sage',name:'Soft sage',color:'#adb5a0'},{id:'clay',name:'Rose clay',color:'#c39480'},{id:'ink',name:'Deep olive',color:'#62664e'},{id:'blue',name:'Dusty blue',color:'#9baeb7'}];
+export const floorFinishes=[{id:'original',name:'Original neutral',color:'#d5c4a5'},{id:'oak',name:'Natural oak',color:'#c7aa7e'},{id:'walnut',name:'Smoked walnut',color:'#795a42'},{id:'stone',name:'Warm limestone',color:'#c9c2b2'}];
+export function validFinishes(f){return f===undefined||Boolean(f&&wallFinishes.some(x=>x.id===f.wall)&&floorFinishes.some(x=>x.id===f.floor)&&['daylight','evening'].includes(f.light));}
+export function finishesFor(state){return state.finishes||{wall:'palette',floor:'original',light:'daylight'};}

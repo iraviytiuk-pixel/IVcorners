@@ -1,970 +1,110 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>IV Corners</title>
-
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@200;300;400;500&family=Pinyon+Script&display=swap">
-<style>
-:root{
-  --ground:#F1EBE5; --ground-dp:#E3D9CE; --ground-lt:#FBF7F2;
-  --ink:#4A3B30; --ink-2:#7D6E61; --ink-3:#A79A8C;
-  --crimson:#9B1A1A; --burg:#5A1E1E; --choc:#3A2A1C;
-  --greige:#C4B7A6; --forest:#4A5230; --brass:#96703C;
-  --line:rgba(43,33,26,.16); --line-2:rgba(43,33,26,.08);
-  --disp:'Jost',-apple-system,'Helvetica Neue',Arial,sans-serif;
-  --burgundy:#7D1A20;
-  --scr:'Pinyon Script','Snell Roundhand','Brush Script MT',cursive;
-  --ui:'Jost',-apple-system,'Helvetica Neue',Arial,sans-serif;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-[hidden]{display:none!important}
-html,body{height:100%;overflow:hidden}
-body{
-  background:var(--ground-dp); color:var(--ink); font-family:var(--ui);
-  display:flex; align-items:center; justify-content:center; overflow-x:hidden;
-}
-
-/* ============ STAGE ============ */
-.stage{
-  position:relative; container-type:inline-size;
-  width:min(100vw, 154svh); aspect-ratio:1568/1004; max-height:100svh;
-  overflow:hidden; isolation:isolate;
-  background:
-    linear-gradient(116deg, rgba(255,253,250,.92) 0%, rgba(255,251,246,.42) 20%, rgba(255,250,244,0) 40%),
-    radial-gradient(ellipse 70% 55% at 14% 4%, rgba(255,254,252,.85), transparent 62%),
-    radial-gradient(ellipse 60% 70% at 92% 96%, rgba(190,172,152,.30), transparent 65%),
-    linear-gradient(158deg, #F6F1EB 0%, #F1EBE5 38%, #E7DED4 72%, #DCD1C4 100%);
-}
-/* plaster grain */
-.stage::after{
-  content:''; position:absolute; inset:0; z-index:9; pointer-events:none;
-  opacity:.5; mix-blend-mode:multiply;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.055'/%3E%3C/svg%3E");
-}
-/* light shaft */
-.shaft{
-  position:absolute; z-index:1; pointer-events:none;
-  left:-14%; top:-30%; width:62%; height:170%;
-  background:linear-gradient(101deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.60) 34%, rgba(255,255,255,.72) 47%, rgba(255,255,255,0) 68%);
-  transform:rotate(-13deg); filter:blur(14px);
-}
-.shaft.b{ left:2%; width:34%; opacity:.55; transform:rotate(-13deg) translateX(6cqw) }
-
-/* ============ BRAND ============ */
-.brand{
-  position:absolute; z-index:20; left:4.4cqw; top:4.6cqw;
-  padding:1.15cqw 1.75cqw;
-}
-.bx{ position:absolute; background:var(--burgundy); opacity:.55 }
-.bx-t{ top:0; left:0; height:1px; width:100%; transform-origin:left;   animation:gx .42s ease .30s both }
-.bx-r{ top:0; right:0; width:1px; height:100%; transform-origin:top;    animation:gy .42s ease .72s both }
-.bx-b{ bottom:0; right:0; height:1px; width:100%; transform-origin:right; animation:gx .42s ease 1.14s both }
-.bx-l{ bottom:0; left:0; width:1px; height:100%; transform-origin:bottom; animation:gy .42s ease 1.56s both }
-@keyframes gx{ from{transform:scaleX(0)} to{transform:scaleX(1)} }
-@keyframes gy{ from{transform:scaleY(0)} to{transform:scaleY(1)} }
-.mark{ width:2.2cqw; height:2.2cqw; flex:none }
-.mark line{ stroke:var(--ink); stroke-width:1.7; }
-.brand-t{
-  font-family:var(--disp);
-  font-size:1.52cqw; font-weight:400; letter-spacing:.36em;
-  line-height:1; text-transform:uppercase; color:var(--burgundy);
-  white-space:nowrap; padding-right:.36em;
-}
-
-/* ============ HEADLINE ============ */
-.head{
-  position:absolute; z-index:20; left:4.4cqw; top:15.4cqw;
-  width:35cqw; color:var(--ink);
-  font-family:var(--disp);
-  font-weight:200; font-style:normal;
-  line-height:1.17; letter-spacing:.115em;
-  color:#5B4A3D;
-}
-.head > span{ display:block; white-space:nowrap }
-.l1{ font-size:3.18cqw }
-.l2{ font-size:3.18cqw }
-.l3{ font-size:3.18cqw }
-.head .per{ color:var(--crimson) }
-
-.kicker{
-  position:absolute; z-index:20; left:4.4cqw; top:12.9cqw;
-  font-size:.86cqw; font-weight:500; letter-spacing:.30em;
-  text-transform:uppercase; color:var(--crimson);
-}
-.kicker::before{
-  content:''; display:inline-block; width:2.6cqw; height:1px;
-  background:var(--crimson); vertical-align:.32em; margin-right:.9cqw; opacity:.55;
-}
-
-/* ============ AIRENA ============ */
-.airena{
-  position:absolute; z-index:20; left:25.8cqw; top:34.8cqw;
-  width:13.6cqw;
-}
-.av{
-  position:absolute; z-index:19; left:4.4cqw; top:30.6cqw;
-  width:19cqw; height:34cqw; border-radius:.3cqw;
-  object-fit:cover; object-position:50% 14%;
-  box-shadow:0 2.2cqw 4cqw rgba(74,59,48,.24), 0 .5cqw 1.2cqw rgba(74,59,48,.12);
-}
-.av-n{ font-family:var(--scr); font-size:2.6cqw; color:var(--crimson); line-height:1; display:block; margin-bottom:.15cqw }
-.av-t{ font-size:.86cqw; font-weight:300; line-height:1.55; color:var(--ink-2); letter-spacing:.005em; max-width:13.6cqw }
-.cur{ display:inline-block; width:1px; height:.90cqw; background:var(--crimson); vertical-align:-.04cqw; animation:bl 1.05s step-end infinite }
-@keyframes bl{50%{opacity:0}}
-
-/* ============ CTA ============ */
-.cta{
-  position:absolute; z-index:20; left:25.8cqw; top:47.6cqw;
-  display:inline-flex; align-items:center; gap:1.5cqw;
-  padding:.95cqw 1.1cqw .95cqw 2.1cqw; border:none; cursor:pointer;
-  border-radius:99px; background:rgba(255,253,250,.52);
-  border:1px solid rgba(43,33,26,.20);
-  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
-  box-shadow:0 .5cqw 1.5cqw rgba(43,33,26,.10), inset 0 1px 0 rgba(255,255,255,.75);
-  font-family:var(--ui); font-size:.92cqw; font-weight:500;
-  letter-spacing:.20em; text-transform:uppercase; color:var(--ink);
-  transition:background .2s, border-color .2s, transform .2s;
-}
-.cta:hover{ background:var(--crimson); border-color:var(--crimson); color:#FBF7F2; transform:translateY(-1px) }
-.cta:hover .arc{ background:rgba(255,255,255,.18); border-color:rgba(255,255,255,.4) }
-.cta:hover .arc svg *{ stroke:#FBF7F2 }
-.arc{
-  width:2.35cqw; height:2.35cqw; border-radius:50%; flex:none;
-  border:1px solid rgba(43,33,26,.22); display:grid; place-items:center;
-  transition:background .2s,border-color .2s;
-}
-.arc svg{ width:1.05cqw; height:1.05cqw }
-.arc svg *{ stroke:var(--ink); stroke-width:1.5; fill:none; transition:stroke .2s }
-.cta:focus-visible{ outline:2px solid var(--crimson); outline-offset:3px }
-
-/* ============ BYLINE ============ */
-.byline{
-  position:absolute; z-index:20; left:25.8cqw; top:55.2cqw;
-  font-size:.78cqw; font-weight:400; letter-spacing:.26em;
-  text-transform:uppercase; color:var(--ink-3);
-}
-.byline em{ font-family:var(--scr); font-style:normal; font-size:1.5cqw; letter-spacing:0; color:var(--crimson); text-transform:none; vertical-align:-.15cqw }
-
-/* ============ TABLET ============ */
-.tablet{
-  position:absolute; z-index:14; left:41cqw; top:3.4cqw;
-  width:56cqw; height:47cqw;
-  transform:perspective(2600px) rotateY(-5.2deg) rotateX(.8deg);
-  transform-origin:12% 50%;
-  container-type:inline-size;
-  filter:drop-shadow(0 4.5cqw 5.5cqw rgba(72,54,40,.26)) drop-shadow(0 1cqw 2cqw rgba(72,54,40,.14));
-}
-.glass{
-  position:absolute; inset:0; border-radius:2.44cqw;
-  background:linear-gradient(142deg, rgba(255,255,255,.80) 0%, rgba(252,248,243,.54) 40%, rgba(233,224,213,.60) 100%);
-  border:1px solid rgba(255,255,255,.95);
-  box-shadow:inset 0 1px 0 rgba(255,255,255,1), inset 0 0 6.50cqw rgba(255,255,255,.55),
-             inset 0 -1px 0 rgba(140,118,98,.22), 0 0 0 1px rgba(140,118,98,.13);
-  backdrop-filter:blur(3px); -webkit-backdrop-filter:blur(3px);
-  overflow:hidden;
-}
-/* glass sheen */
-.glass::before{
-  content:''; position:absolute; left:-30%; top:-60%; width:60%; height:220%;
-  background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);
-  transform:rotate(-14deg); pointer-events:none; z-index:8;
-}
-
-/* inner rail */
-.rail{
-  position:absolute; left:1.79cqw; top:8.78cqw; width:3.58cqw; z-index:6;
-  display:flex; flex-direction:column; align-items:center; gap:3.17cqw;
-}
-.rail svg{ width:1.79cqw; height:1.79cqw; opacity:.42 }
-.rail svg *{ stroke:var(--ink); stroke-width:1.4; fill:none }
-.rail .on{ opacity:.95 }
-.rail .on *{ stroke:var(--crimson) }
-
-/* tools top-right */
-.tools{ position:absolute; right:2.93cqw; top:2.76cqw; display:flex; gap:2.44cqw; z-index:6 }
-.tools svg{ width:2.11cqw; height:2.11cqw; opacity:.4 }
-.tools svg *{ stroke:var(--ink); stroke-width:1.4; fill:none }
-
-/* room render */
-.render{
-  position:absolute; z-index:5; left:23.74cqw; top:3.41cqw;
-  width:49.11cqw; height:25.69cqw; object-fit:cover;
-  border-radius:0.41cqw;
-  box-shadow:0 2.60cqw 4.88cqw rgba(60,44,32,.26), 0 0 0 1px rgba(255,255,255,.55);
-}
-.render-tag{
-  position:absolute; z-index:6; left:23.74cqw; top:25.69cqw;
-  padding:0.81cqw 1.46cqw; background:rgba(155,26,26,.93);
-  font-size:1.01cqw; letter-spacing:.20em; text-transform:uppercase;
-  color:#FBF7F2; font-weight:500;
-}
-
-/* floating cards (left of render) */
-.fc{
-  position:absolute; z-index:6; border-radius:0.98cqw;
-  border:1px solid rgba(255,255,255,.8);
-  box-shadow:0 2.11cqw 3.90cqw rgba(60,44,32,.20);
-  background-size:cover; background-position:center;
-}
-.fc1{ left:13.98cqw; top:6.34cqw; width:7.32cqw; height:6.34cqw; transform:rotate(-4deg) }
-.fc2{ left:8.13cqw; top:12.68cqw; width:7.97cqw; height:6.83cqw; transform:rotate(3deg) }
-/* floating swatches (right of render) */
-.fs{
-  position:absolute; z-index:6;
-  border:1px solid rgba(255,255,255,.75);
-  box-shadow:0 2.44cqw 4.55cqw rgba(60,44,32,.24);
-  background-size:cover; background-position:center;
-}
-.fs1{ left:73.50cqw; top:2.44cqw;  width:12.85cqw; height:10.73cqw; transform:rotate(-2deg) }
-.fs2{ left:83.90cqw; top:7.15cqw;  width:12.36cqw; height:11.22cqw; transform:rotate(4deg) }
-
-/* ---- FLOOR PLAN ---- */
-.plan{
-  position:absolute; z-index:4; left:3.41cqw; top:34.63cqw;
-  width:67.32cqw; height:42.93cqw;
-  background:linear-gradient(150deg,#FBF7F1 0%,#F3EDE5 100%);
-  border:1px solid rgba(43,33,26,.14);
-  box-shadow:0 2.28cqw 4.88cqw rgba(60,44,32,.16), inset 0 0 4.88cqw rgba(196,183,166,.20);
-  overflow:hidden;
-}
-.plan{ display:flex; align-items:stretch }
-.plan-img{ height:100%; width:auto; flex:none; object-fit:contain; mix-blend-mode:multiply }
-.plan-tb{
-  flex:1; min-width:0; border-left:1px solid rgba(155,26,26,.18);
-  padding:1.9cqw 1.6cqw; display:flex; flex-direction:column; gap:.75cqw;
-  font-family:var(--ui);
-}
-.tb-r{ display:flex; flex-direction:column; gap:.18cqw }
-.tb-k{ font-size:.74cqw; letter-spacing:.22em; text-transform:uppercase; color:var(--ink-3) }
-.tb-v{ font-size:1.02cqw; letter-spacing:.11em; text-transform:uppercase; color:var(--crimson); font-weight:400 }
-.tb-hr{ height:1px; background:rgba(155,26,26,.16); margin:.35cqw 0 }
-.tb-sig{ font-family:var(--scr); font-size:1.75cqw; color:var(--crimson); letter-spacing:0; text-transform:none }
-.plan-h{
-  position:absolute; z-index:5; left:23.74cqw; top:31.54cqw;
-  font-size:1.07cqw; letter-spacing:.24em; text-transform:uppercase; color:var(--ink-3); font-weight:500;
-}
-
-/* ---- MATERIAL PALETTE ---- */
-.mp{ position:absolute; z-index:5; left:73.50cqw; top:34.63cqw; width:23.41cqw }
-.mp-h,.cn-h{
-  font-size:1.07cqw; letter-spacing:.24em; text-transform:uppercase;
-  color:var(--ink-3); font-weight:500; margin-bottom:1.38cqw;
-  display:flex; align-items:center; gap:1.14cqw;
-}
-.mp-h::after,.cn-h::after{ content:''; flex:1; height:1px; background:var(--line-2) }
-.mp-g{ display:grid; grid-template-columns:repeat(3,1fr); gap:0.73cqw }
-.sw{
-  aspect-ratio:1; background-size:cover; background-position:center;
-  border:1px solid rgba(255,255,255,.6);
-  box-shadow:0 0.73cqw 1.46cqw rgba(60,44,32,.17);
-}
-.sw.tall{ grid-row:span 2; aspect-ratio:auto }
-
-/* ---- CONCEPT ---- */
-.cn{ position:absolute; z-index:5; left:73.50cqw; top:63.25cqw; width:23.41cqw }
-.cn-box{
-  height:11.71cqw; border:1px solid rgba(43,33,26,.13);
-  background:linear-gradient(160deg,rgba(255,253,250,.75),rgba(243,237,229,.55));
-  display:grid; place-items:center;
-}
-.cn-box svg{ width:70%; height:70% }
-.cn-box svg *{ stroke:var(--ink-2); stroke-width:1.1; fill:none; stroke-linecap:round; stroke-linejoin:round }
-
-/* ============ RED BOX ============ */
-.box{
-  position:absolute; z-index:18; left:79.5cqw; top:45.4cqw;
-  width:12.2cqw; height:14.6cqw;
-  transform:perspective(1400px) rotateY(-16deg) rotateX(3deg);
-  transform-style:preserve-3d;
-  background:linear-gradient(128deg,#C22323 0%,#9B1A1A 44%,#6E1111 100%);
-  border-radius:.3cqw;
-  box-shadow:0 3.4cqw 4.4cqw rgba(60,30,20,.34), inset .12cqw .12cqw 0 rgba(255,255,255,.22), inset -.3cqw -.3cqw 1.4cqw rgba(0,0,0,.28);
-  display:grid; place-items:center;
-}
-.box::before{ /* top face */
-  content:''; position:absolute; left:0; right:0; top:-2.5cqw; height:2.6cqw;
-  background:linear-gradient(180deg,#D93A3A,#B02020);
-  transform:rotateX(74deg); transform-origin:bottom; border-radius:.3cqw .3cqw 0 0;
-}
-.box-t{
-  font-family:var(--disp); font-weight:700; font-size:1.30cqw;
-  letter-spacing:.20em; line-height:1.28; text-align:center;
-  color:rgba(255,236,230,.80); text-transform:uppercase;
-  text-shadow:0 .08cqw .18cqw rgba(90,10,10,.5);
-}
-
-/* ============ DESK SAMPLES ============ */
-.desk{
-  position:absolute; z-index:16; left:41cqw; bottom:1.8cqw;
-  width:50cqw; height:17cqw;
-  transform:perspective(1000px) rotateX(56deg);
-  transform-origin:50% 100%;
-  display:flex; align-items:flex-end; gap:2.0cqw; padding-left:1.5cqw;
-}
-.tile{
-  border-radius:.22cqw; background-size:cover; background-position:center;
-  box-shadow:
-    0 .28cqw 0 rgba(255,255,255,.55),
-    0 .62cqw 0 rgba(120,102,86,.38),
-    0 .95cqw 0 rgba(90,74,60,.30),
-    0 2.2cqw 2.6cqw rgba(70,52,38,.34);
-  border:1px solid rgba(255,255,255,.35);
-}
-.t1{ width:8.8cqw; height:12cqw; transform:rotate(-2deg) }
-.t2{ width:7.6cqw; height:10cqw; transform:rotate(3deg) translateY(-1.2cqw) }
-.t3{ width:9.4cqw; height:12.6cqw; transform:rotate(-1deg) }
-.t4{ width:7.9cqw; height:10.8cqw; transform:rotate(2deg) translateY(-.8cqw) }
-.t5{ width:7.2cqw; height:10cqw; transform:rotate(-3deg) }
-
-/* blueprint sheet under samples */
-.sheet{
-  position:absolute; z-index:15; left:50cqw; bottom:1.2cqw; width:27cqw; height:11cqw;
-  transform:perspective(1000px) rotateX(60deg); transform-origin:50% 100%;
-  background:linear-gradient(170deg,#FCF9F4,#F2ECE3);
-  box-shadow:0 1.6cqw 2.4cqw rgba(70,52,38,.22);
-  overflow:hidden;
-}
-.sheet svg{ width:100%; height:100%; opacity:.34 }
-.sheet svg *{ stroke:var(--ink-2); fill:none; stroke-width:1 }
-
-/* bottom vignette to seat everything */
-.floor{
-  position:absolute; z-index:10; left:0; right:0; bottom:0; height:30%;
-  background:linear-gradient(180deg,transparent,rgba(160,138,116,.22));
-  pointer-events:none;
-}
-
-/* ============ MOBILE ============ */
-@media (max-width:820px){
-  html,body{ overflow:auto }
-  body{ display:block; background:var(--ground) }
-  .stage{
-    width:100%; aspect-ratio:auto; min-height:100svh; container-type:normal;
-    padding:calc(env(safe-area-inset-top,0px) + 26px) 20px calc(env(safe-area-inset-bottom,0px) + 30px);
-    display:flex; flex-direction:column; gap:26px;
-  }
-  .shaft,.desk,.sheet,.floor,.box,.fc,.fs{ display:none }
-  .brand,.kicker,.head,.airena,.cta,.byline,.tablet,.av{
-    position:static; left:auto; top:auto; bottom:auto; width:auto; transform:none; filter:none;
-  }
-  .brand{ padding:11px 16px } .brand-t{ font-size:13px }
-  .kicker{ font-size:9.5px } .kicker::before{ width:22px; margin-right:8px }
-  .head{ line-height:.9 }
-  .l1,.l2,.l3{ font-size:8.4vw }
-  .airena{ width:auto; max-width:none } .av-t{ max-width:none }
-  .av{ width:62vw; height:auto; aspect-ratio:234/420; align-self:flex-start; border-radius:4px }
-  .av-n{ font-size:30px } .av-t{ font-size:13px }
-  .cta{ align-self:flex-start; padding:11px 11px 11px 22px; gap:16px; font-size:11px }
-  .arc{ width:28px;height:28px } .arc svg{ width:13px;height:13px }
-  .byline{ font-size:9.5px } .byline em{ font-size:17px }
-  .tablet{ width:100%; height:auto; aspect-ratio:61.5/50; order:5; border-radius:12px }
-  .tablet{ filter:drop-shadow(0 18px 26px rgba(72,54,40,.22)) }
-}
-
-/* ============ SCREEN SHELL ============ */
-.screen{ position:absolute; inset:0 }
-.screen[hidden]{ display:none }
-
-/* ============ SCREEN 2 — THE BRIEF ============ */
-#s2{ background:
-  radial-gradient(ellipse 60% 50% at 78% 10%, rgba(255,254,252,.8), transparent 65%),
-  linear-gradient(162deg,#F6F1EB 0%,#F1EBE5 44%,#E9E0D6 100%); }
-
-.rail2{
-  position:absolute; z-index:22; right:4.4cqw; top:5.6cqw;
-  display:flex; align-items:center; gap:2.6cqw;
-}
-.st{ display:flex; align-items:baseline; gap:.55cqw;
-  font-size:.82cqw; font-weight:400; letter-spacing:.20em;
-  text-transform:uppercase; color:var(--ink-3); }
-.st i{ font-style:normal; font-size:.66cqw; letter-spacing:.1em; opacity:.7 }
-.st.on{ color:var(--burgundy) }
-.st.on i{ opacity:1 }
-.st.on::after{ content:''; width:1.6cqw; height:1px; background:var(--burgundy); margin-left:.3cqw }
-
-.av2{
-  position:absolute; z-index:18; left:0; top:7.5cqw;
-  width:47cqw; height:56.5cqw;
-  object-fit:cover; object-position:44% 8%;
-  -webkit-mask-image:linear-gradient(98deg,#000 0%,#000 52%,rgba(0,0,0,.55) 76%,transparent 97%);
-          mask-image:linear-gradient(98deg,#000 0%,#000 52%,rgba(0,0,0,.55) 76%,transparent 97%);
-}
-.av2-base{
-  position:absolute; z-index:18; left:0; right:0; bottom:0; height:16cqw;
-  background:linear-gradient(to top, #F1EBE5 12%, rgba(241,235,229,0) 100%);
-  pointer-events:none;
-}
-
-.conv{
-  position:absolute; z-index:20; left:38cqw; top:17.5cqw; width:56cqw;
-  padding:3.4cqw 3.6cqw 3.8cqw;
-  background:rgba(255,253,250,.86);
-  border:1px solid rgba(255,255,255,.9);
-  border-radius:.5cqw;
-  backdrop-filter:blur(16px) saturate(1.05);
-  -webkit-backdrop-filter:blur(16px) saturate(1.05);
-  box-shadow:0 2.6cqw 5cqw rgba(74,59,48,.16), 0 .5cqw 1.4cqw rgba(74,59,48,.07),
-             inset 0 1px 0 rgba(255,255,255,1);
-}
-.conv .av-n{ font-family:var(--scr); font-size:2.2cqw; color:var(--crimson);
-  display:block; line-height:1; margin-bottom:1.5cqw }
-.ln{
-  font-family:var(--disp); font-weight:200; letter-spacing:.05em;
-  font-size:1.72cqw; line-height:1.5; color:#5B4A3D;
-  margin-bottom:.75cqw; min-height:1.2em;
-}
-.ln b{ font-weight:400; color:var(--burgundy) }
-.ln.ask{ color:var(--ink); font-weight:300; margin-top:1.5cqw }
-.cur2{ display:inline-block; width:1px; height:1.5cqw; background:var(--crimson);
-  vertical-align:-.2cqw; animation:bl 1.05s step-end infinite }
-
-.chips{ display:flex; flex-wrap:wrap; gap:.85cqw; margin-top:2.4cqw;
-  opacity:0; transform:translateY(.6cqw); animation:rise .5s ease forwards }
-@keyframes rise{ to{ opacity:1; transform:none } }
-.chip{
-  font-family:var(--ui); font-size:.95cqw; font-weight:400;
-  letter-spacing:.14em; text-transform:uppercase; color:var(--ink);
-  background:rgba(255,253,250,.55); border:1px solid rgba(125,26,32,.30);
-  padding:.95cqw 1.7cqw; border-radius:99px; cursor:pointer;
-  transition:background .18s, color .18s, border-color .18s, transform .18s;
-}
-.chip:hover{ background:var(--burgundy); border-color:var(--burgundy);
-  color:#FBF7F2; transform:translateY(-1px) }
-.chip:focus-visible{ outline:2px solid var(--burgundy); outline-offset:3px }
-
-.shapes{ display:flex; gap:1.3cqw; margin-top:2.2cqw;
-  opacity:0; transform:translateY(.6cqw); animation:rise .5s ease forwards }
-.shape{
-  width:11cqw; padding:1.2cqw 1.2cqw 1cqw; cursor:pointer;
-  background:rgba(255,253,250,.5); border:1px solid rgba(125,26,32,.20);
-  border-radius:.4cqw; text-align:center;
-  transition:border-color .18s, background .18s, transform .18s;
-}
-.shape:hover{ border-color:var(--burgundy); background:rgba(255,253,250,.9);
-  transform:translateY(-2px) }
-.shape svg{ width:100%; height:5.4cqw; display:block }
-.shape svg *{ stroke:var(--crimson); stroke-width:3; fill:rgba(155,26,26,.05) }
-.shape span{ display:block; margin-top:.85cqw; font-size:.72cqw;
-  letter-spacing:.16em; text-transform:uppercase; color:var(--ink-2) }
-
-.back{
-  position:absolute; z-index:22; left:4.4cqw; top:12.4cqw;
-  cursor:pointer; padding:.7cqw 1.4cqw;
-  background:rgba(255,253,250,.82); border:1px solid rgba(125,26,32,.22);
-  border-radius:99px; backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px);
-  box-shadow:0 .4cqw 1cqw rgba(74,59,48,.10);
-  font-family:var(--ui); font-size:.78cqw; letter-spacing:.20em;
-  text-transform:uppercase; color:var(--ink-2); transition:color .18s, background .18s;
-}
-.back:hover{ color:#FBF7F2; background:var(--burgundy); border-color:var(--burgundy) }
-.back:focus-visible{ outline:2px solid var(--burgundy); outline-offset:3px }
-
-@media (max-width:820px){
-  .screen{ position:static }
-  #s2{ display:flex; flex-direction:column; gap:22px;
-    padding:calc(env(safe-area-inset-top,0px) + 72px) 20px 40px }
-  .rail2,.av2,.conv,.back{ position:static; width:auto }
-  .rail2{ flex-wrap:wrap; gap:14px; order:1 }
-  .st{ font-size:10px } .st i{ font-size:9px } .st.on::after{ width:14px }
-  .back{ order:0; align-self:flex-start; font-size:11px }
-  .av2{ width:74vw; height:auto; aspect-ratio:760/1376; order:2; border-radius:4px;
-    -webkit-mask-image:none; mask-image:none; align-self:flex-start }
-  .av2-base{ display:none }
-  .conv{ padding:20px 18px 22px; background:rgba(255,253,250,.9);
-    border:1px solid rgba(255,255,255,.9); border-radius:6px;
-    box-shadow:0 10px 26px rgba(74,59,48,.12) }
-  .conv{ order:3 }
-  .conv .av-n{ font-size:28px; margin-bottom:12px }
-  .ln{ font-size:17px; line-height:1.55 }
-  .cur2{ height:15px }
-  .chips{ gap:8px; margin-top:18px } .chip{ font-size:11px; padding:10px 16px }
-  .shapes{ flex-wrap:wrap; gap:10px } .shape{ width:calc(50% - 5px); padding:12px }
-  .shape svg{ height:56px } .shape span{ font-size:9.5px; margin-top:8px }
-}
-
-
-/* ============ dimension step ============ */
-.dims{ display:flex; align-items:flex-end; gap:1.6cqw; margin-top:2cqw;
-  opacity:0; transform:translateY(.6cqw); animation:rise .5s ease forwards }
-.fld{ display:flex; flex-direction:column; gap:.55cqw }
-.fld label{ font-size:.68cqw; letter-spacing:.20em; text-transform:uppercase; color:var(--ink-3) }
-.fld input{
-  width:8.4cqw; font-family:var(--disp); font-weight:300; font-size:2.1cqw;
-  color:var(--ink); background:none; border:none; border-bottom:1px solid rgba(125,26,32,.35);
-  padding:.2cqw 0 .5cqw; text-align:center; -moz-appearance:textfield;
-}
-.fld input::-webkit-outer-spin-button,.fld input::-webkit-inner-spin-button{ -webkit-appearance:none; margin:0 }
-.fld input:focus{ outline:none; border-bottom-color:var(--burgundy) }
-.fld span{ font-size:.66cqw; letter-spacing:.18em; text-transform:uppercase; color:var(--ink-3); text-align:center }
-.times{ font-family:var(--disp); font-size:1.5cqw; color:var(--ink-3); padding-bottom:1.6cqw }
-.go{
-  margin-left:.8cqw; margin-bottom:.3cqw; cursor:pointer;
-  display:inline-flex; align-items:center; gap:1cqw;
-  background:var(--ink); color:var(--cream); border:none;
-  padding:1.05cqw 1.9cqw; border-radius:99px;
-  font-family:var(--ui); font-size:.88cqw; font-weight:500;
-  letter-spacing:.18em; text-transform:uppercase; transition:background .18s, transform .18s;
-}
-.go:hover{ background:var(--burgundy); transform:translateY(-1px) }
-.go:disabled{ opacity:.35; cursor:not-allowed; transform:none }
-
-/* ============ SCREEN 3 — THE PLAN ============ */
-#s3{ background:
-  radial-gradient(ellipse 55% 45% at 20% 8%, rgba(255,254,252,.85), transparent 62%),
-  linear-gradient(160deg,#F6F1EB 0%,#F1EBE5 46%,#E9E0D6 100%); }
-.notes{ position:absolute; z-index:20; left:4.4cqw; top:19cqw; width:24cqw }
-.notes .av-n{ font-family:var(--scr); font-size:2.1cqw; color:var(--crimson);
-  display:block; line-height:1; margin-bottom:1.3cqw }
-.nt{ font-family:var(--disp); font-weight:200; font-size:1.18cqw; line-height:1.62;
-  letter-spacing:.04em; color:#5B4A3D; margin-bottom:1cqw; opacity:0;
-  animation:rise .55s ease forwards }
-.nt b{ font-weight:400; color:var(--burgundy) }
-.av3{ position:absolute; z-index:19; left:4.4cqw; bottom:3.4cqw;
-  width:7cqw; height:9cqw; border-radius:.3cqw; object-fit:cover; object-position:50% 12%;
-  box-shadow:0 .9cqw 2cqw rgba(74,59,48,.18) }
-.plancard{
-  position:absolute; z-index:20; left:31cqw; top:9cqw; width:64cqw; height:47cqw;
-  background:rgba(255,253,250,.9); border:1px solid rgba(255,255,255,.9);
-  border-radius:.5cqw; backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
-  box-shadow:0 2.4cqw 4.6cqw rgba(74,59,48,.15), inset 0 1px 0 rgba(255,255,255,1);
-  display:flex; align-items:center; justify-content:center; padding:2cqw;
-}
-.plancard > div{ width:100%; height:100%; display:flex; align-items:center; justify-content:center }
-.plancard svg{ width:100%; height:100%; overflow:visible }
-.plan-wall{ stroke:var(--crimson); stroke-linecap:butt; }
-.plan-draw{ animation:drawline .55s ease forwards }
-@keyframes drawline{ to{ stroke-dashoffset:0 } }
-.fi{ opacity:0; animation:fi .5s ease forwards }
-@keyframes fi{ to{ opacity:1 } }
-.next3{ position:absolute; z-index:21; left:31cqw; top:58cqw }
-
-@media (max-width:820px){
-  .dims{ flex-wrap:wrap; gap:14px; margin-top:16px }
-  .fld input{ width:74px; font-size:26px } .fld label{ font-size:9.5px } .fld span{ font-size:9px }
-  .times{ font-size:18px; padding-bottom:20px }
-  .go{ margin:0; padding:12px 20px; font-size:11px }
-  #s3{ display:flex; flex-direction:column; gap:20px;
-    padding:calc(env(safe-area-inset-top,0px) + 72px) 20px 40px }
-  .notes,.plancard,.av3,.next3{ position:static; width:auto }
-  .av3{ width:84px; height:106px; order:2 }
-  .notes{ order:3 } .nt{ font-size:14px }
-  .plancard{ order:4; height:auto; aspect-ratio:64/47; padding:14px }
-  .next3{ order:5; align-self:flex-start }
-}
-
-@media (prefers-reduced-motion:reduce){ .cur{animation:none} .cta{transition:none}
-  .bx{ animation:none !important; transform:none !important } }
-</style>
-
-<div class="stage">
-
-  <div class="brand">
-    <span class="bx bx-t"></span><span class="bx bx-r"></span><span class="bx bx-b"></span><span class="bx bx-l"></span>
-    <div class="brand-t">IV Corners</div>
-  </div>
-
-  <section class="screen" id="s1">
-  <div class="shaft" aria-hidden="true"></div>
-  <div class="shaft b" aria-hidden="true"></div>
-
-  <div class="kicker">AI Interior Design</div>
-
-  <h1 class="head">
-    <span class="l1">YOUR HOME,</span>
-    <span class="l2">DESIGNED</span>
-    <span class="l3">AROUND YOU<span class="per">.</span></span>
-  </h1>
-
-  <img class="av" src="assets/avatar.jpg" alt="AIrena, the AI designer">
-  <div class="airena">
-    <span class="av-n">AIrena</span>
-    <p class="av-t" id="t"><span class="cur"></span></p>
-  </div>
-
-  <button class="cta">Meet AIrena
-    <span class="arc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg></span>
-  </button>
-
-  <div class="byline">by <em>IV Atelier</em></div>
-
-  <!-- ============ TABLET ============ -->
-  <div class="tablet">
-    <div class="glass">
-      <div class="rail" aria-hidden="true">
-        <svg class="on" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
-        <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M4 12h16"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M6 10v10h12V10"/></svg>
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 21c1.5-4 4-6 7-6s5.5 2 7 6"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M6 12h12"/></svg>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f1e9"><meta name="description" content="A home that feels like you. Explore your layout, discover a material palette, and find a place for the things you love with IV Corners.">
+  <title>IV Corners — A home, distinctly yours.</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;450;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css"><link rel="stylesheet" href="/studio.css"><script type="module" src="/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="wordmark" href="#" aria-label="IV Corners home"><span class="brand-symbol" aria-hidden="true">IV</span><span>IV CORNERS<small>BY IV ATELIER</small></span></a>
+    <nav aria-label="Main navigation"><a href="#approach">The approach</a><a href="#materials">The feeling</a><a href="/studio.html?chat=1">Meet AIrena</a></nav>
+    <button class="text-button header-cta" data-open-studio>Design your space <span aria-hidden="true">↗</span></button>
+  </header>
+  <main id="main">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="short-line"></span> A NEW WAY TO FEEL AT HOME</p>
+        <h1 id="hero-title">Your space.<br>Your story.<br><em>Your corners.</em></h1>
+        <p class="hero-description">The place is new. The feeling is yours.<br>Find your layout, layer your materials, and make room for the things you love.</p>
+        <button class="solid-button" data-open-studio>Make yourself at home <span aria-hidden="true">↗</span></button>
+        <div class="hero-note"><span class="tiny-corners" aria-hidden="true"></span> A little vision. A whole new way to live.</div>
       </div>
-
-      <div class="tools" aria-hidden="true">
-        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8"/><rect x="13" y="3" width="8" height="8"/><rect x="3" y="13" width="8" height="8"/><rect x="13" y="13" width="8" height="8"/></svg>
-        <svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/></svg>
-        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/></svg>
+      <div class="hero-stage" id="hero-stage">
+        <div class="stage-heading"><span>YOUR NEXT CHAPTER, IN VIEW.</span><span>EST. BY YOU / 01</span></div>
+        <div class="monitor-wrap" id="monitor-wrap">
+          <div class="monitor">
+            <div class="camera" aria-hidden="true"></div>
+            <div class="screen-app" id="screen-app">
+              <div class="app-topbar"><span class="app-brand">IV <span>CORNERS</span></span><span class="app-project">The next chapter <span>/ Living room</span></span><button class="expand-button" data-open-studio aria-label="Open the room design studio">↗</button></div>
+              <div class="app-workspace">
+                <div class="app-rail" role="tablist" aria-label="Explore the design demo" aria-orientation="vertical">
+                  <button class="rail-button active" id="tab-look" role="tab" aria-selected="true" aria-controls="panel-look" data-view="look" title="Your look"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7M6 8v12h12V8M10 20v-7h4v7"/></svg><span>Look</span></button>
+                  <button class="rail-button" id="tab-plan" role="tab" aria-selected="false" aria-controls="panel-plan" tabindex="-1" data-view="plan" title="Your plan"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4zM4 13h7V4m0 9h9M11 17v3"/></svg><span>Plan</span></button>
+                  <button class="rail-button" id="tab-palette" role="tab" aria-selected="false" aria-controls="panel-palette" tabindex="-1" data-view="palette" title="Your palette"><svg viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5ZM3 12l9 5 9-5M3 16l9 5 9-5"/></svg><span>Palette</span></button>
+                  <button class="rail-button" id="tab-art" role="tab" aria-selected="false" aria-controls="panel-art" tabindex="-1" data-view="art" title="Your art"><svg viewBox="0 0 24 24"><path d="M4 3h16v18H4zM7 6h10v12H7zM7 15l4-5 6 7"/></svg><span>Art</span></button>
+                  <span class="rail-bottom">IV</span>
+                </div>
+                <div class="app-center">
+                  <div class="app-title"><div><span class="micro-label">PROJECT NO. 001</span><h2 id="screen-title">A softer kind of living.</h2></div><span class="screen-count">01 / 04</span></div>
+                  <div class="demo-panel look-panel" id="panel-look" role="tabpanel" aria-labelledby="tab-look">
+                    <img class="room-image" src="/assets/room.jpg" alt="Warm living room inspiration with a cream sofa, walnut shelving, and natural stone">
+                    <button class="hotspot hotspot-sofa" data-select-item="sofa" aria-label="Explore the linen sofa">+</button><button class="hotspot hotspot-table" data-select-item="table" aria-label="Explore the stone coffee table">+</button>
+                    <span class="photo-caption">ROOM INSPIRATION</span>
+                    <div class="item-note" id="item-note" hidden></div>
+                  </div>
+                  <div class="demo-panel plan-panel" id="panel-plan" role="tabpanel" aria-labelledby="tab-plan" hidden><div id="hero-plan"></div><button class="plan-option" id="hero-alternate">Try another arrangement <span>↗</span></button></div>
+                  <div class="demo-panel palette-panel" id="panel-palette" role="tabpanel" aria-labelledby="tab-palette" hidden><div class="screen-materials" id="screen-materials"></div><p>Texture is what makes a room feel like a room.</p></div>
+                  <div class="demo-panel art-panel" id="panel-art" role="tabpanel" aria-labelledby="tab-art" hidden><div class="art-wall"><div class="wall-art" id="hero-art"></div><div class="wall-console"></div><div class="wall-vase"></div><span class="art-dimension">24 × 32 in</span></div><button class="plan-option" id="hero-art-next">Find your composition <span>↗</span></button></div>
+                  <div class="app-bottom"><div class="mini-plan" id="mini-plan"></div><div class="design-note"><span class="micro-label">A NOTE FROM AIRENA</span><p id="demo-note">“A room for slow mornings.<br>And a little more you.”</p><span class="signature">AIrena</span></div></div>
+                </div>
+                <aside class="app-inspector"><span class="micro-label">THE FEELING</span><h3 id="inspector-title">Warm & grounded</h3><div class="inspector-materials" id="inspector-materials"></div><div class="palette-switches" aria-label="Select a material palette"><button class="palette-switch active" data-palette="0" aria-label="Warm and grounded palette" aria-pressed="true"></button><button class="palette-switch" data-palette="1" aria-label="Quiet and natural palette" aria-pressed="false"></button><button class="palette-switch" data-palette="2" aria-label="Bold and collected palette" aria-pressed="false"></button></div><div class="inspector-footer">CONSIDERED.<br>NOT COMPLICATED.</div></aside>
+              </div>
+              <div class="app-status"><span><i></i> Your room, coming together</span><span>INTERACTIVE CONCEPT</span></div>
+            </div>
+            <div class="monitor-chin"><span>IV CORNERS</span></div>
+          </div>
+          <div class="monitor-neck" aria-hidden="true"></div><div class="monitor-foot" aria-hidden="true"></div>
+        </div>
+        <div class="material-stack" aria-hidden="true"><img class="stack-walnut" src="/assets/walnut.jpg" alt=""><img class="stack-stone" src="/assets/travertine.jpg" alt=""><img class="stack-boucle" src="/assets/boucle.jpg" alt=""></div>
+        <div class="stage-caption"><span><span class="caption-arrow">↖</span> Go on. Make a few changes.</span><button id="demo-play" aria-label="Play the design walkthrough"><span class="play-icon">▷</span> Play the story</button></div>
       </div>
+      <div class="hero-footer"><a href="#approach">SCROLL TO SETTLE IN <span>↓</span></a><span>GOOD DESIGN STARTS WITH HOW YOU LIVE.</span><span>01 — THE POSSIBILITY</span></div>
+    </section>
 
-      <div class="fc fc1" style="background-image:url(assets/linen.jpg)"></div>
-      <div class="fc fc2" style="background-image:url(assets/plaster.jpg)"></div>
-
-      <img class="render" src="assets/room.jpg" alt="Rendered living room">
-      <div class="render-tag">Your Living Room</div>
-
-      <div class="fs fs1" style="background-image:url(assets/marble_dk.jpg)"></div>
-      <div class="fs fs2" style="background-image:url(assets/boucle.jpg)"></div>
-
-      <div class="plan-h">Layout &nbsp;/&nbsp; Level 01</div>
-      <div class="plan">
-        <img class="plan-img" src="assets/plan.jpg" alt="Ground floor plan">
-        <div class="plan-tb">
-          <div class="tb-r"><span class="tb-k">Project</span><span class="tb-v">IV Corners</span></div>
-          <div class="tb-hr"></div>
-          <div class="tb-r"><span class="tb-k">Drawing</span><span class="tb-v">Ground Floor</span></div>
-          <div class="tb-r"><span class="tb-k">Scale</span><span class="tb-v">1 : 100</span></div>
-          <div class="tb-r"><span class="tb-k">Area</span><span class="tb-v">3,240 sq ft</span></div>
-          <div class="tb-hr"></div>
-          <div class="tb-r"><span class="tb-k">Drawn by</span><span class="tb-v tb-sig">AIrena</span></div>
-          <div class="tb-r"><span class="tb-k">Revision</span><span class="tb-v">03</span></div>
+    <section class="intro-section section-pad" id="approach">
+      <div class="section-kicker reveal"><span>01 / A DIFFERENT APPROACH</span><span>LESS GUESSWORK. MORE YOU.</span></div>
+      <div class="intro-heading reveal"><h2>You don’t need a new life.<br>Just a space that <em>fits it.</em></h2><p>The sofa you’re keeping. The art you found on a trip. The corner that could become something.<br><br>Start with what makes you, you. We’ll help you see how it all comes together.</p></div>
+      <div class="process-layout">
+        <div class="process-visual reveal"><img src="/assets/room.jpg" alt="A thoughtfully layered living room with natural materials" loading="lazy"><div class="drawing-card"><div><span>THE LITTLE THINGS, CONSIDERED.</span><span>↗</span></div><div id="story-plan"></div><footer><span>LIVING ROOM / STUDY 01</span><span>16′ × 13′</span></footer></div><span class="vertical-caption">FROM AN EMPTY ROOM TO YOUR EVERYDAY.</span></div>
+        <div class="process-steps">
+          <button class="process-step reveal active" data-step="0"><span class="step-number">01</span><span><h3>Bring your room.</h3><p>A few dimensions. A familiar shape.<br>The beginning of something that feels right.</p></span><span class="step-arrow">↗</span></button>
+          <button class="process-step reveal" data-step="1"><span class="step-number">02</span><span><h3>Find your feeling.</h3><p>Warm or quiet. Collected or pared back.<br>Discover the materials you want to live with.</p></span><span class="step-arrow">↗</span></button>
+          <button class="process-step reveal" data-step="2"><span class="step-number">03</span><span><h3>Make it yours.</h3><p>Try a different arrangement. Hang that print.<br>See the possibilities before you move a thing.</p></span><span class="step-arrow">↗</span></button>
+          <button class="text-button process-cta" data-open-studio>Explore your first room <span>↗</span></button>
         </div>
       </div>
+    </section>
 
-      <div class="mp">
-        <div class="mp-h">Material Palette</div>
-        <div class="mp-g">
-          <div class="sw" style="background-image:url(assets/marble_red.jpg)"></div>
-          <div class="sw" style="background-image:url(assets/walnut.jpg)"></div>
-          <div class="sw" style="background-image:url(assets/brass.jpg)"></div>
-          <div class="sw" style="background-image:url(assets/travertine.jpg)"></div>
-          <div class="sw" style="background-image:url(assets/terrazzo.jpg)"></div>
-          <div class="sw" style="background-image:url(assets/leather.jpg)"></div>
-          <div class="sw" style="background-image:url(assets/fluted.jpg)"></div>
-          <div class="sw" style="background-image:url(assets/tile_red.jpg)"></div>
-          <div class="sw" style="background-image:url(assets/linen.jpg)"></div>
-          <div class="sw" style="background-image:url(assets/plaster.jpg)"></div>
-          <div class="sw" style="background-image:url(assets/marble_dk.jpg)"></div>
-          <div class="sw" style="background-image:url(assets/boucle.jpg)"></div>
-        </div>
-      </div>
+    <section class="materials-section section-pad" id="materials">
+      <div class="section-kicker reveal"><span>02 / THE ART OF LIVING</span><span>FEEL IT BEFORE YOU FILL IT.</span></div>
+      <div class="materials-heading reveal"><h2>A room is a feeling.<br><em>Start there.</em></h2><div class="material-description"><p>Honest textures. A little contrast.<br>Materials that get better together.</p><div class="mood-tabs" role="tablist" aria-label="Material stories"><button role="tab" aria-selected="true" class="active" data-mood="0" id="mood-0" aria-controls="mood-board">The warm edit</button><button role="tab" aria-selected="false" tabindex="-1" data-mood="1" id="mood-1" aria-controls="mood-board">The quiet edit</button><button role="tab" aria-selected="false" tabindex="-1" data-mood="2" id="mood-2" aria-controls="mood-board">The bold edit</button></div></div></div>
+      <div class="material-board reveal" id="mood-board" role="tabpanel" aria-labelledby="mood-0"><div class="board-type"><span>MATERIAL STUDY</span><span id="board-number">Nº 001</span></div><div class="physical-swatches" id="physical-swatches"></div><div class="board-footer"><span id="board-description">Walnut. Travertine. Linen. A little warmth goes a long way.</span><button class="text-button" id="use-palette">Make this your starting point <span>↗</span></button></div></div>
+    </section>
 
-    </div>
-  </div>
+    <section class="mini-airena-banner" id="airena"><img src="/assets/avatar_lg.jpg" alt="AIrena, your design guide" loading="lazy"><div><p class="eyebrow">YOUR DESIGN PARTNER, RIGHT BESIDE YOU</p><h2>A conversation.<br><em>A place to call yours.</em></h2></div><a href="/studio.html?chat=1" class="text-button">Step into the studio <span>↗</span></a></section>
 
-  <!-- ============ DESK ============ -->
-  <div class="sheet" aria-hidden="true">
-<svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
- <rect x="30" y="26" width="240" height="150"/><rect x="300" y="26" width="270" height="110"/>
- <line x1="30" y1="96" x2="270" y2="96"/><line x1="150" y1="26" x2="150" y2="176"/>
- <line x1="300" y1="70" x2="570" y2="70"/><line x1="430" y1="26" x2="430" y2="136"/>
- <rect x="52" y="112" width="70" height="40"/><circle cx="200" cy="60" r="22"/>
- <rect x="320" y="150" width="120" height="70"/><line x1="320" y1="180" x2="440" y2="180"/>
- <line x1="30" y1="206" x2="270" y2="206" stroke-dasharray="6 5"/>
-</svg>
-</div>
-  <div class="desk" aria-hidden="true">
-    <div class="tile t1" style="background-image:url(assets/travertine.jpg)"></div>
-    <div class="tile t2" style="background-image:url(assets/fluted.jpg)"></div>
-    <div class="tile t3" style="background-image:url(assets/boucle.jpg)"></div>
-    <div class="tile t4" style="background-image:url(assets/plaster.jpg)"></div>
-    <div class="tile t5" style="background-image:url(assets/marble_red.jpg)"></div>
-  </div>
+    <section class="closing-section"><p class="eyebrow reveal">A NEW PLACE. A FAMILIAR FEELING.</p><h2 class="reveal">Come on in.<br><em>Make it yours.</em></h2><button class="light-button reveal" data-open-studio>Find your four corners <span>↗</span></button><div class="closing-corner corner-one" aria-hidden="true"></div><div class="closing-corner corner-two" aria-hidden="true"></div></section>
+  </main>
+  <footer class="site-footer"><a class="wordmark" href="#"><span class="brand-symbol" aria-hidden="true">IV</span><span>IV CORNERS<small>BY IV ATELIER</small></span></a><p>A home, distinctly yours.</p><div><span>© <span id="year">2026</span> IV Corners</span><button id="about-preview">About this preview ↗</button></div></footer>
 
-
-  <div class="floor" aria-hidden="true"></div>
-  </section>
-
-  <section class="screen" id="s2" hidden>
-    <button class="back" id="back">&#8592; Back</button>
-    <div class="rail2">
-      <span class="st on"><i>01</i> Your brief</span>
-      <span class="st"><i>02</i> Your plan</span>
-      <span class="st"><i>03</i> Your look</span>
-      <span class="st"><i>04</i> Your list</span>
-    </div>
-    <img class="av2" src="assets/avatar_lg.jpg" alt="AIrena">
-    <div class="av2-base" aria-hidden="true"></div>
-    <div class="conv">
-      <span class="av-n">AIrena</span>
-      <p class="ln" id="l1"></p>
-      <p class="ln" id="l2"></p>
-      <p class="ln ask" id="l3"></p>
-      <div class="chips" id="rooms" hidden><button class="chip" data-room="Living room">Living room</button><button class="chip" data-room="Bedroom">Bedroom</button><button class="chip" data-room="Kitchen">Kitchen</button><button class="chip" data-room="Dining">Dining</button><button class="chip" data-room="Office">Office</button><button class="chip" data-room="Something else">Something else</button></div>
-      <p class="ln ask" id="l4" hidden></p>
-      <div class="shapes" id="shapes" hidden><button class="shape" data-shape="Rectangle"><svg viewBox="0 0 140 110" fill="none" stroke-linejoin="round"><rect x="10" y="22" width="120" height="76"/></svg><span>Rectangle</span></button><button class="shape" data-shape="L-shaped"><svg viewBox="0 0 140 110" fill="none" stroke-linejoin="round"><path d="M10 22 H130 V60 H74 V98 H10 Z"/></svg><span>L-shaped</span></button><button class="shape" data-shape="Alcove"><svg viewBox="0 0 140 110" fill="none" stroke-linejoin="round"><path d="M10 22 H130 V98 H10 Z M40 22 V4 H96 V22"/></svg><span>Alcove</span></button><button class="shape" data-shape="Open plan"><svg viewBox="0 0 140 110" fill="none" stroke-linejoin="round"><path d="M10 22 H130 V98 H10 Z"/><path d="M78 22 V62" stroke-dasharray="6 6"/></svg><span>Open plan</span></button></div>
-      <p class="ln ask" id="l5" hidden></p>
-      <div class="dims" id="dims" hidden>
-        <div class="fld"><label for="dw">Width</label>
-          <input id="dw" type="number" min="6" max="60" step="0.5" value="16"><span>feet</span></div>
-        <div class="times">&#215;</div>
-        <div class="fld"><label for="dl">Length</label>
-          <input id="dl" type="number" min="6" max="60" step="0.5" value="13"><span>feet</span></div>
-        <button class="go" id="go">Draw it</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="screen" id="s3" hidden>
-    <button class="back" id="back3">&#8592; Back</button>
-    <div class="rail2">
-      <span class="st"><i>01</i> Your brief</span>
-      <span class="st on"><i>02</i> Your plan</span>
-      <span class="st"><i>03</i> Your look</span>
-      <span class="st"><i>04</i> Your list</span>
-    </div>
-    <div class="notes">
-      <span class="av-n">AIrena</span>
-      <div id="notes"></div>
-    </div>
-    <img class="av3" src="assets/avatar_lg.jpg" alt="AIrena">
-    <div class="plancard"><div id="plan"></div></div>
-    <button class="cta next3" id="next3">Now the look
-      <span class="arc"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15"/><path d="M13 6l6 6-6 6"/></svg></span>
-    </button>
-  </section>
-</div>
-
-<script>
-(function(){
- var RM = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
- function type(el, txt, done){
-   if (RM) { el.innerHTML = txt; done && done(); return; }
-   var i = 0;
-   (function go(){
-     el.innerHTML = txt.slice(0,i) + '<span class="cur2"></span>';
-     if (i++ < txt.length) setTimeout(go, i < 4 ? 46 : 16);
-     else { el.innerHTML = txt; done && done(); }
-   })();
- }
-
- /* screen 1 */
- var M="Hi, I’m AIrena — a virtual version of Irena, programmed from her brain and every project she’s ever designed.";
- var t=document.getElementById('t'), i=0;
- if (RM) t.innerHTML = M;
- else (function go(){ t.innerHTML=M.slice(0,i)+'<span class="cur"></span>';
-   if(i++<M.length) setTimeout(go, i<5?70:20); })();
-
- /* navigation */
- function show(id){
-   document.querySelectorAll('.screen').forEach(function(s){ s.hidden = (s.id !== id); });
-   if (id === 's2') brief();
- }
- document.querySelector('.cta').addEventListener('click', function(){ show('s2'); });
- document.querySelector('.nav-btn') && document.querySelector('.nav-btn')
-   .addEventListener('click', function(){ show('s2'); });
- document.getElementById('back').addEventListener('click', function(){ show('s1'); });
-
- /* screen 2 */
- var started = false;
- var L1 = "I’m going to design your room end to end.";
- var L2 = "You’ll leave with a scaled floor plan, a material palette, and every piece linked to buy.";
- var L3 = "About four minutes. Which room are we doing?";
-
- var NOTE = {
-   "Living room": "Good — the living room is the one people feel first.",
-   "Bedroom":     "Good — bedrooms are where the psychology matters most.",
-   "Kitchen":     "Good — kitchens are the hardest to get right, and the most worth it.",
-   "Dining":      "Good — dining rooms live or die on circulation.",
-   "Office":      "Good — an office has to work before it can look like anything.",
-   "Something else": "We’ll come back to that — first, the shape."
- };
-
- function brief(){
-   if (started) return; started = true;
-   var l1=document.getElementById('l1'), l2=document.getElementById('l2'),
-       l3=document.getElementById('l3'), rooms=document.getElementById('rooms');
-   setTimeout(function(){
-     type(l1, L1, function(){
-       setTimeout(function(){ type(l2, L2, function(){
-         setTimeout(function(){ type(l3, L3, function(){
-           rooms.hidden = false;
-         }); }, 240);
-       }); }, 240);
-     });
-   }, 380);
- }
-
- document.getElementById('rooms').addEventListener('click', function(e){
-   var b = e.target.closest('.chip'); if (!b) return;
-   var room = b.dataset.room; chosenRoom = room;
-   this.hidden = true;
-   var l3 = document.getElementById('l3');
-   var l4 = document.getElementById('l4'), shapes = document.getElementById('shapes');
-   l3.innerHTML = '<b>' + room + '.</b> ' + NOTE[room];
-   l4.hidden = false;
-   type(l4, "Which of these is closest to its shape?", function(){ shapes.hidden = false; });
- });
-
-
- /* ---------- step 3: dimensions ---------- */
- var chosenRoom = "Living room", chosenShape = "Rectangle";
-
- document.getElementById('shapes').addEventListener('click', function(e){
-   var b = e.target.closest('.shape'); if (!b) return;
-   chosenShape = b.dataset.shape;
-   this.hidden = true;
-   document.getElementById('l4').innerHTML = '<b>' + chosenShape + '.</b>';
-   var l5 = document.getElementById('l5'), dims = document.getElementById('dims');
-   l5.hidden = false;
-   type(l5, "How big is it? Roughly is fine — I'll work to what you give me.", function(){
-     dims.hidden = false;
-   });
- });
-
- document.getElementById('go').addEventListener('click', function(){
-   var w = parseFloat(document.getElementById('dw').value) || 16;
-   var l = parseFloat(document.getElementById('dl').value) || 13;
-   w = Math.min(60, Math.max(6, w)); l = Math.min(60, Math.max(6, l));
-   show('s3'); drawPlan(w, l);
- });
- document.getElementById('back3').addEventListener('click', function(){ show('s2'); });
-
- /* ---------- the plan ---------- */
- var CR = '#9B1A1A', WALLT = 3.6;
-
- function rc(x,y,w,h,rx,op){
-   return '<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+w.toFixed(1)+
-          '" height="'+h.toFixed(1)+'" rx="'+(rx||0)+'"'+(op?' opacity="'+op+'"':'')+'/>';
- }
- function sofa(w,d){
-   var arm=5.5, back=8, o=rc(-w/2,-d/2,w,d,3);
-   o+=rc(-w/2+1.2,-d/2+1.2,w-2.4,back,2);
-   o+=rc(-w/2+1.2,-d/2+1.2,arm,d-2.4,2)+rc(w/2-arm-1.2,-d/2+1.2,arm,d-2.4,2);
-   var n=w>70?3:2, inner=w-2*arm-2.4, cw=(inner-(n-1)*1.5)/n;
-   for(var i=0;i<n;i++) o+=rc(-w/2+arm+1.2+i*(cw+1.5),-d/2+back+2.2,cw,d-back-5,2);
-   return o;
- }
- function chair(w,d){
-   return rc(-w/2,-d/2,w,d,3)+rc(-w/2+1.2,-d/2+1.2,w-2.4,6.5,2)
-        +rc(-w/2+1.2,-d/2+8,4.5,d-9.5,2)+rc(w/2-5.7,-d/2+8,4.5,d-9.5,2)
-        +rc(-w/2+6.5,-d/2+9,w-13,d-11,2);
- }
- function tbl(w,d){ return rc(-w/2,-d/2,w,d,2)+rc(-w/2+3,-d/2+3,w-6,d-6,1,'.45'); }
- function rnd(w,d){ var r=Math.min(w,d)/2;
-   return '<circle cx="0" cy="0" r="'+r.toFixed(1)+'"/><circle cx="0" cy="0" r="'+(r*0.55).toFixed(1)+'" opacity=".45"/>'; }
- function cons(w,d){ return rc(-w/2,-d/2,w,d,1)+'<line x1="'+(-w/2)+'" y1="0" x2="'+(w/2)+'" y2="0" opacity=".45"/>'; }
- function plant(w,d){ var r=Math.min(w,d)/2,o='<circle cx="0" cy="0" r="'+r.toFixed(1)+'" opacity=".5"/>';
-   for(var i=0;i<7;i++){ var a=i*2*Math.PI/7;
-     o+='<circle cx="'+(Math.cos(a)*r*.52).toFixed(1)+'" cy="'+(Math.sin(a)*r*.52).toFixed(1)+'" r="'+(r*.36).toFixed(1)+'" opacity=".45"/>'; }
-   return o; }
- function rug(w,d){
-   var o=rc(-w/2,-d/2,w,d,1)+'', out='<rect x="'+(-w/2).toFixed(1)+'" y="'+(-d/2).toFixed(1)+
-     '" width="'+w.toFixed(1)+'" height="'+d.toFixed(1)+'" rx="1" stroke-dasharray="7 5" opacity=".6"/>';
-   for(var x=-w/2+14;x<w/2;x+=14){ var L=Math.min(x+w/2,d);
-     out+='<line x1="'+x.toFixed(1)+'" y1="'+(-d/2).toFixed(1)+'" x2="'+(x-L).toFixed(1)+'" y2="'+(-d/2+L).toFixed(1)+'" opacity=".14"/>'; }
-   return out;
- }
- var SYM = { sofa:sofa, chair:chair, table:tbl, round:rnd, console:cons, plant:plant, rug:rug };
-
- /* rule-based placement — no model involved */
- function layout(W,D){
-   var it=[], sofaW=Math.min(96, Math.max(58, W*0.52)), sofaD=37;
-   var sofaY = D - 16 - sofaD/2;                       // against the lower wall, facing the window
-   var ctW = Math.min(54, sofaW*0.58), ctD = 26;
-   var ctY = sofaY - sofaD/2 - 18 - ctD/2;             // 18" of leg room
-   var rugW = Math.min(W-34, sofaW+60), rugD = Math.min(D-40, sofaD+18+ctD+52);
-   it.push({k:'rug',  x:W/2, y:(sofaY+sofaD/2 + (ctY-ctD/2) )/2 - 6, w:rugW, d:rugD});
-   it.push({k:'sofa', x:W/2, y:sofaY, w:sofaW, d:sofaD, r:180, lab:'SOFA'});
-   it.push({k:'table',x:W/2, y:ctY,   w:ctW,  d:ctD, r:0, lab:'COFFEE'});
-   var chW=32, chD=34, gap=ctW/2+10+chW/2;
-   if (W > sofaW + 2*chW + 30){
-     it.push({k:'chair', x:W/2-gap, y:ctY-4, w:chW, d:chD, r:62});
-     it.push({k:'chair', x:W/2+gap, y:ctY-4, w:chW, d:chD, r:-62});
-   }
-   it.push({k:'console', x:W/2, y:17, w:Math.min(76, W*0.45), d:15, r:0, lab:'CONSOLE'});
-   var st=Math.min(20, (W-sofaW)/2-14);
-   if (st>=14){
-     it.push({k:'round', x:W/2-sofaW/2-st/2-4, y:sofaY-4, w:st, d:st});
-     it.push({k:'round', x:W/2+sofaW/2+st/2+4, y:sofaY-4, w:st, d:st});
-   }
-   it.push({k:'plant', x:W-20, y:36, w:22, d:22});
-   return it;
- }
-
- function ftin(v){ var f=Math.floor(Math.round(v)/12), i=Math.round(v)%12; return f+"'-"+i+'"'; }
-
- function drawPlan(wFt, lFt){
-   var W=wFt*12, D=lFt*12, M=52;
-   var host=document.getElementById('plan');
-   var box=host.parentNode.getBoundingClientRect();
-   var sc=Math.min((box.width-40-M*2)/W, (box.height-40-M*2)/D);
-   var PW=W*sc+M*2, PH=D*sc+M*2;
-   var walls=[[0,0,W,0],[W,0,W,D],[W,D,0,D],[0,D,0,0]];
-   var g='<g transform="translate('+M+','+M+') scale('+sc+')">';
-
-   g+='<polygon points="0,0 '+W+',0 '+W+','+D+' 0,'+D+'" fill="'+CR+'" fill-opacity=".03"/>';
-
-   /* walls, each drawn in turn */
-   for (var i=0;i<4;i++){
-     var s=walls[i], L=Math.hypot(s[2]-s[0], s[3]-s[1]);
-     g+='<line class="plan-wall plan-draw" x1="'+s[0]+'" y1="'+s[1]+'" x2="'+s[2]+'" y2="'+s[3]+
-        '" stroke-width="'+WALLT+'" stroke-dasharray="'+L+'" stroke-dashoffset="'+L+
-        '" style="animation-delay:'+(i*0.22)+'s"/>';
-   }
-   /* window on the upper wall, door on the left */
-   var winW=Math.min(96, W*0.45), wx=(W-winW)/2;
-   g+='<g class="fi" style="animation-delay:1.0s">';
-   g+='<line x1="'+wx+'" y1="0" x2="'+(wx+winW)+'" y2="0" stroke="#FBF7F1" stroke-width="'+(WALLT+1)+'"/>';
-   [-WALLT/2,0,WALLT/2].forEach(function(t,j){
-     g+='<line x1="'+wx+'" y1="'+t+'" x2="'+(wx+winW)+'" y2="'+t+'" stroke="'+CR+'" stroke-width="'+(j==1?1.3:0.7)+'"/>';
-   });
-   var dAt=D*0.62, dW=34;
-   g+='<line x1="0" y1="'+dAt+'" x2="0" y2="'+(dAt-dW)+'" stroke="#FBF7F1" stroke-width="'+(WALLT+1)+'"/>';
-   g+='<line x1="0" y1="'+dAt+'" x2="'+dW+'" y2="'+dAt+'" stroke="'+CR+'" stroke-width="1.4"/>';
-   g+='<path d="M '+dW+' '+dAt+' A '+dW+' '+dW+' 0 0 0 0 '+(dAt-dW)+'" fill="none" stroke="'+CR+
-      '" stroke-width="0.7" stroke-dasharray="4 4" opacity=".5"/></g>';
-
-   /* furniture, placed by rule then revealed in order */
-   var items=layout(W,D), t=1.25;
-   items.forEach(function(o){
-     var f=SYM[o.k]||tbl;
-     g+='<g class="fi" style="animation-delay:'+t.toFixed(2)+'s" fill="none" stroke="'+CR+
-        '" stroke-opacity="'+(o.k==='rug'?'.55':'.62')+'" stroke-width="'+(o.k==='rug'?0.7:0.85)+
-        '" vector-effect="non-scaling-stroke" stroke-linejoin="round" transform="translate('+
-        o.x.toFixed(1)+','+o.y.toFixed(1)+') rotate('+(o.r||0)+')">'+f(o.w,o.d)+'</g>';
-     t+=0.16;
-   });
-   g+='</g>';
-
-   /* annotation, unscaled */
-   var a='<g font-family="Jost, Helvetica, sans-serif" fill="'+CR+'" class="fi" style="animation-delay:'+(t+0.2)+'s">';
-   items.forEach(function(o){ if(!o.lab) return;
-     a+='<text x="'+(M+o.x*sc).toFixed(1)+'" y="'+(M+o.y*sc+3).toFixed(1)+
-        '" text-anchor="middle" font-size="8" letter-spacing="1.5" opacity=".72">'+o.lab+'</text>'; });
-   var bx0=M, bx1=M+W*sc, by0=M, by1=M+D*sc, off=30;
-   a+='<g stroke="'+CR+'" stroke-width="1" opacity=".45" fill="none">'
-     +'<line x1="'+bx0+'" y1="'+(by1+off)+'" x2="'+bx1+'" y2="'+(by1+off)+'"/>'
-     +'<line x1="'+bx0+'" y1="'+(by1+off-5)+'" x2="'+bx0+'" y2="'+(by1+off+5)+'"/>'
-     +'<line x1="'+bx1+'" y1="'+(by1+off-5)+'" x2="'+bx1+'" y2="'+(by1+off+5)+'"/>'
-     +'<line x1="'+(bx0-off)+'" y1="'+by0+'" x2="'+(bx0-off)+'" y2="'+by1+'"/>'
-     +'<line x1="'+(bx0-off-5)+'" y1="'+by0+'" x2="'+(bx0-off+5)+'" y2="'+by0+'"/>'
-     +'<line x1="'+(bx0-off-5)+'" y1="'+by1+'" x2="'+(bx0-off+5)+'" y2="'+by1+'"/></g>';
-   a+='<text x="'+((bx0+bx1)/2)+'" y="'+(by1+off-7)+'" text-anchor="middle" font-size="10" letter-spacing="1.5" opacity=".8">'+ftin(W)+'</text>';
-   a+='<text x="'+(bx0-off-7)+'" y="'+((by0+by1)/2)+'" text-anchor="middle" font-size="10" letter-spacing="1.5" opacity=".8" transform="rotate(-90 '+(bx0-off-7)+' '+((by0+by1)/2)+')">'+ftin(D)+'</text>';
-   a+='<text x="'+((bx0+bx1)/2)+'" y="'+(by0-26)+'" text-anchor="middle" font-size="14" letter-spacing="5">'+chosenRoom.toUpperCase()+'</text>';
-   a+='<text x="'+((bx0+bx1)/2)+'" y="'+(by0-12)+'" text-anchor="middle" font-size="9" letter-spacing="2.2" opacity=".6">'
-     +ftin(W)+' × '+ftin(D)+' · '+Math.round(W*D/144)+' SQ FT</text></g>';
-
-   host.innerHTML='<svg viewBox="0 0 '+PW+' '+PH+'" xmlns="http://www.w3.org/2000/svg">'+g+a+'</svg>';
-
-   /* AIrena reads her own decisions */
-   var sq=Math.round(W*D/144);
-   var NT=[
-     "I’ve floated the sofa off the back wall so the room reads wider than it is, and faced it into the window — the light is the best thing you own.",
-     "The coffee table sits <b>18 inches</b> off the sofa. Close enough to reach a glass, far enough to walk past without turning sideways.",
-     "Everything sits on one rug. That’s what stops a room this size feeling like furniture that happens to share a floor.",
-     "<b>" + sq + " square feet</b>, every walkway over <b>30 inches</b>. Nothing here blocks the door."
-   ];
-   var nb=document.getElementById('notes'); nb.innerHTML='';
-   NT.forEach(function(txt,i){
-     var p=document.createElement('p'); p.className='nt'; p.innerHTML=txt;
-     p.style.animationDelay=(1.5+i*0.5)+'s'; nb.appendChild(p);
-   });
- }
-
-})();
-</script>
-
-</body>
+  <dialog class="studio-dialog" id="studio-dialog" aria-labelledby="studio-heading">
+    <div class="studio-header"><a class="wordmark" href="#" id="studio-home"><span class="brand-symbol" aria-hidden="true">IV</span><span>YOUR DESIGN STUDIO<small>IV CORNERS / CONCEPT PREVIEW</small></span></a><button class="close-button" id="close-studio" aria-label="Close design studio">×</button></div>
+    <div class="studio-body"><aside class="studio-controls"><p class="eyebrow">YOUR ROOM, YOUR WAY</p><h2 id="studio-heading">Let’s begin<br><em>with you.</em></h2><p class="studio-intro">A few details. A new perspective.<br>Try a room and make it your own.</p>
+      <form id="room-form"><fieldset><legend>01 / THE SPACE</legend><label for="room-name">Room name</label><input id="room-name" name="room" value="My living room" maxlength="40" required><div class="dimension-fields"><label for="room-width">Width <span>(ft)</span><input id="room-width" type="number" min="10" max="30" step="0.5" value="16" required></label><span>×</span><label for="room-depth">Depth <span>(ft)</span><input id="room-depth" type="number" min="10" max="30" step="0.5" value="13" required></label></div><label for="room-shape">Room shape</label><select id="room-shape"><option value="rectangle">Rectangle</option><option value="l-shape">L-shaped</option></select></fieldset><fieldset><legend>02 / THE FEELING</legend><div class="studio-palettes" id="studio-palettes"></div></fieldset><button type="submit" class="solid-button">Update my room <span>↗</span></button></form>
+      <p class="local-note">A visual exploration. Sample furnishings, not a verified fit or live AI design.</p>
+    </aside><div class="studio-result"><div class="studio-result-header"><div><span class="micro-label">YOUR NEXT CHAPTER</span><h3 id="studio-room-title">My living room</h3></div><button class="text-button" id="save-room">Save on this device <span>↓</span></button></div><div class="studio-tabs" role="tablist" aria-label="Room design views"><button class="active" role="tab" id="studio-tab-plan" aria-selected="true" aria-controls="studio-plan-view" data-studio-view="plan">Your plan</button><button role="tab" id="studio-tab-look" aria-selected="false" aria-controls="studio-look-view" tabindex="-1" data-studio-view="look">Your look</button><button role="tab" id="studio-tab-art" aria-selected="false" aria-controls="studio-art-view" tabindex="-1" data-studio-view="art">Your art</button></div>
+      <div class="studio-view" id="studio-plan-view" role="tabpanel" aria-labelledby="studio-tab-plan"><div id="studio-plan"></div><div class="plan-actions"><span id="room-area">208 SQ FT / CONCEPT LAYOUT</span><button class="text-button" id="alternate-layout">Another arrangement ↗</button></div></div>
+      <div class="studio-view" id="studio-look-view" role="tabpanel" aria-labelledby="studio-tab-look" hidden><img class="studio-room-photo" src="/assets/room.jpg" alt="Room inspiration; this reference image does not change to match your floor plan"><p class="reference-note">A reference for the feeling — not a render of your room.</p><div id="studio-look-materials"></div></div>
+      <div class="studio-view" id="studio-art-view" role="tabpanel" aria-labelledby="studio-tab-art" hidden><div class="studio-art-wall"><div class="studio-art-frame" id="studio-art-frame"></div><div class="wall-console"></div><span id="studio-art-dimension">24 × 32 in</span></div><div class="art-controls"><label for="art-size">Artwork width <span id="art-size-value">24 in</span><input type="range" id="art-size" min="12" max="48" value="24" step="2"></label><button class="text-button" id="change-art">Try another print ↗</button><label class="upload-button" for="art-upload">Upload your own art <span>↑</span><input id="art-upload" type="file" accept="image/jpeg,image/png,image/webp"></label></div><p class="reference-note">Wall study: 12 ft wide. Your image stays in this browser session.</p></div>
+      <div class="studio-result-footer"><p id="studio-rationale">Room to gather. Space to breathe.</p><button class="text-button" id="download-plan">Download floor plan <span>↓</span></button></div><p id="studio-feedback" role="status" aria-live="polite"></p>
+    </div></div>
+  </dialog>
+  <dialog class="about-dialog" id="about-dialog" aria-labelledby="about-heading"><button class="close-button" id="close-about" aria-label="Close preview information">×</button><p class="eyebrow">A FIRST LOOK</p><h2 id="about-heading">A little of<br><em>what’s to come.</em></h2><p>This is the IV Corners visual concept. Explore room dimensions, sample layouts, materials, and artwork. Saved rooms stay on this device; uploaded artwork stays in this browser session.</p><p>AIrena’s notes are written examples. Room photography is inspiration, not a reconstruction of your space. The new studio adds movable furniture and a 3D room. Live AI and video require provider connections; verified furniture and accounts come later.</p><button class="solid-button" id="about-to-studio">Explore the studio <span>↗</span></button></dialog>
+<a class="airena-launcher" href="/studio.html?chat=1" aria-label="Chat with AIrena in your design studio"><img src="/assets/avatar.jpg" alt=""><span>Meet<strong>AIrena</strong></span><i>↗</i></a></body>
 </html>

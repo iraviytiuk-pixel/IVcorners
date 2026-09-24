@@ -2,3 +2,11 @@ __pycache__/
 *.pyc
 .DS_Store
 node_modules/
+dist/
+.netlify/
+output/
+.playwright-cli/
+vendor/
+.env
+
+.asset-cache/
